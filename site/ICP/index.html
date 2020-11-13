@@ -11,7 +11,7 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
-        <link rel="canonical" href="https://pages.github.ibm.com/CASE/b2m-nodejs/ICP/">
+        <link rel="canonical" href="https://pages.github.com/rafal-szypulka/b2m-nodejs-v2/ICP/">
       
       
       
@@ -38,7 +38,7 @@
     
     
       
-        <title>5. Deploy to IBM Cloud Private - Build to Manage - Node.js application monitoring and logging lab</title>
+        <title>ICP - Build to Manage - Node.js Observability</title>
       
     
     
@@ -102,7 +102,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="https://pages.github.ibm.com/CASE/b2m-nodejs" title="Build to Manage - Node.js application monitoring and logging lab" class="md-header-nav__button md-logo">
+        <a href="https://pages.github.com/rafal-szypulka/b2m-nodejs-v2" title="Build to Manage - Node.js Observability" class="md-header-nav__button md-logo">
           
             <i class="md-icon"></i>
           
@@ -116,10 +116,10 @@
           
             
               <span class="md-header-nav__topic">
-                Build to Manage - Node.js application monitoring and logging lab
+                Build to Manage - Node.js Observability
               </span>
               <span class="md-header-nav__topic">
-                5. Deploy to IBM Cloud Private
+                ICP
               </span>
             
           
@@ -164,7 +164,7 @@
   
 
 
-  <a href="https://github.ibm.com/CASE/b2m-nodejs" title="Go to repository" class="md-source" data-md-source="github">
+  <a href="https://github.ibm.com/rafal-szypulka/b2m-nodejs-v2" title="Go to repository" class="md-source" data-md-source="github">
     
       <div class="md-source__icon">
         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -198,12 +198,12 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="https://pages.github.ibm.com/CASE/b2m-nodejs" title="Build to Manage - Node.js application monitoring and logging lab" class="md-nav__button md-logo">
+    <a href="https://pages.github.com/rafal-szypulka/b2m-nodejs-v2" title="Build to Manage - Node.js Observability" class="md-nav__button md-logo">
       
         <i class="md-icon"></i>
       
     </a>
-    Build to Manage - Node.js application monitoring and logging lab
+    Build to Manage - Node.js Observability
   </label>
   
     <div class="md-nav__source">
@@ -213,7 +213,7 @@
   
 
 
-  <a href="https://github.ibm.com/CASE/b2m-nodejs" title="Go to repository" class="md-source" data-md-source="github">
+  <a href="https://github.ibm.com/rafal-szypulka/b2m-nodejs-v2" title="Go to repository" class="md-source" data-md-source="github">
     
       <div class="md-source__icon">
         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -248,8 +248,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../logging/" title="2. Node.js logging and Elastic stack integration" class="md-nav__link">
-      2. Node.js logging and Elastic stack integration
+    <a href="../logging/" title="2. Node.js Logging" class="md-nav__link">
+      2. Node.js Logging
     </a>
   </li>
 
@@ -260,8 +260,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../monitoring-instrumentation/" title="3. Node.js monitoring instrumentation" class="md-nav__link">
-      3. Node.js monitoring instrumentation
+    <a href="../monitoring-instrumentation/" title="4. Node.js Monitoring" class="md-nav__link">
+      4. Node.js Monitoring
     </a>
   </li>
 
@@ -272,89 +272,9 @@
 
 
   <li class="md-nav__item">
-    <a href="../Prometheus-Grafana/" title="4. Prometheus and Grafana configuration" class="md-nav__link">
-      4. Prometheus and Grafana configuration
+    <a href="../Prometheus-Grafana/" title="5. Prometheus and Grafana configuration" class="md-nav__link">
+      5. Prometheus and Grafana configuration
     </a>
-  </li>
-
-    
-      
-      
-      
-
-  
-
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        5. Deploy to IBM Cloud Private
-      </label>
-    
-    <a href="./" title="5. Deploy to IBM Cloud Private" class="md-nav__link md-nav__link--active">
-      5. Deploy to IBM Cloud Private
-    </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#containerize-the-app-and-deploy-to-ibm-cloud-private" title="Containerize the app and deploy to IBM Cloud Private" class="md-nav__link">
-    Containerize the app and deploy to IBM Cloud Private
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#create-a-docker-container" title="Create a Docker container" class="md-nav__link">
-    Create a Docker container
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#deploy-b2m-nodejs-application-to-the-icp-cluster" title="Deploy b2m-nodejs application to the ICP cluster" class="md-nav__link">
-    Deploy b2m-nodejs application to the ICP cluster
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#enable-monitoring-using-icp-prometheus-and-grafana" title="Enable monitoring using ICP Prometheus and Grafana" class="md-nav__link">
-    Enable monitoring using ICP Prometheus and Grafana
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#define-the-kubernetes-liveness-probe-for-use-with-built-in-application-health-check" title="Define the kubernetes liveness probe for use with built-in application health check" class="md-nav__link">
-    Define the kubernetes liveness probe for use with built-in application health check
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
     
@@ -366,6 +286,18 @@
   <li class="md-nav__item">
     <a href="../OCP/" title="6. Deploy to RedHat OpenShift 4.2" class="md-nav__link">
       6. Deploy to RedHat OpenShift 4.2
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="https://ibm-cloud-architecture.github.io/learning-distributed-tracing-101/docs/lab-jaeger-nodejs.html" title="Test" class="md-nav__link">
+      Test
     </a>
   </li>
 
@@ -458,7 +390,7 @@
               
                 
                 
-                  <h1>5. Deploy to IBM Cloud Private</h1>
+                  <h1>ICP</h1>
                 
                 <h2 id="containerize-the-app-and-deploy-to-ibm-cloud-private">Containerize the app and deploy to IBM Cloud Private<a class="headerlink" href="#containerize-the-app-and-deploy-to-ibm-cloud-private" title="Permanent link">&para;</a></h2>
 <h3 id="create-a-docker-container">Create a Docker container<a class="headerlink" href="#create-a-docker-container" title="Permanent link">&para;</a></h3>
@@ -581,41 +513,6 @@ echo http://$NODE_IP:$NODE_PORT
       
         
 <footer class="md-footer">
-  
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid">
-        
-          <a href="../Prometheus-Grafana/" title="4. Prometheus and Grafana configuration" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
-            </div>
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Previous
-                </span>
-                4. Prometheus and Grafana configuration
-              </span>
-            </div>
-          </a>
-        
-        
-          <a href="../OCP/" title="6. Deploy to RedHat OpenShift 4.2" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                6. Deploy to RedHat OpenShift 4.2
-              </span>
-            </div>
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
-            </div>
-          </a>
-        
-      </nav>
-    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
