@@ -1,0 +1,56 @@
+version: '3.2'
+
+services:
+
+  humio:
+    image: humio/humio:1.14.6
+    volumes:
+      - type: volume
+        source: humio
+        target: /data
+      - type: volume
+        source: kafka
+        target: /data/kafka-data
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+      - "9200:9200"
+    env_file:
+      - ./humio/etc/humio/humio.conf
+    ulimits:
+      nofile:
+        soft: 8192
+        hard: 8192
+    networks:
+      - humio
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # b2m-nodejs:
+  #   build: ./app
+  #   restart: always
+  #   links:
+  #     - humio
+  #   depends_on:
+  #     - humio
+  #   networks:
+  #     - humio
+  #   ports:
+  #     - "3001:3001"
+  #   logging:
+  #     driver: "splunk"
+  #     options:
+  #       splunk-token: "4250cf59-8387-4771-b34a-6bf1774fe156"
+  #       splunk-url: "http://localhost:8080"
+
+networks:
+  humio:
+    driver: bridge
+
+volumes:
+  humio:
+  kafka:
+

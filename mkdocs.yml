@@ -1,0 +1,19 @@
+site_name: Build to Manage - Node.js Observability
+repo_url: https://github.ibm.com/rafal-szypulka/b2m-nodejs-v2
+site_url: https://pages.github.com/rafal-szypulka/b2m-nodejs-v2
+nav:
+    - 1. Introduction: index.md
+    - 2. Node.js Logging: logging.md
+    - 4. Node.js Monitoring: monitoring-instrumentation.md
+    - 5. Prometheus and Grafana configuration: Prometheus-Grafana.md
+    - 6. Deploy to RedHat OpenShift 4.2: OCP.md
+    - Test: "https://ibm-cloud-architecture.github.io/learning-distributed-tracing-101/docs/lab-jaeger-nodejs.html"
+    - About: about.md
+theme:
+  name: 'material'
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true

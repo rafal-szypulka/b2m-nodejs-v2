@@ -1,0 +1,79 @@
+name: B2M Node.js
+timeSelector: {}
+sharedTimeInterval:
+  enabled: false
+  start: 24h
+  end: now
+  isLive: false
+widgets:
+  531812cf-ae85-4ca8-bca1-5d643acdcf10:
+    x: 0
+    y: 0
+    description: ''
+    height: 3
+    queryString: timechart(errCode, unit="1/s")
+    start: 5m
+    width: 6
+    options:
+      legendPosition: right
+      series: {}
+      interpolation: basis
+    visualization: time-chart
+    title: Request count by Message Code
+    type: query
+  b8989e86-159b-43c6-89d2-4a4e81a1a62f:
+    x: 0
+    y: 3
+    description: ''
+    height: 4
+    queryString: timechart(span=60sec, function=percentile(field=transactionTime,
+      percentiles=[50, 75, 99]))
+    start: 5m
+    width: 6
+    options:
+      imputation: none
+      legendPosition: right
+      plotType: area
+      series: {}
+    visualization: time-chart
+    title: Response time percentiles
+    type: query
+  a0ba9af8-5ef5-4cc1-9d83-6192951b7023:
+    x: 6
+    y: 0
+    description: ''
+    height: 11
+    queryString: ''
+    start: 24h
+    width: 6
+    options:
+      columns: '@timestamp::210,message::374,transactionTime::165,level::55'
+      newestAtBottom: 'true'
+      showOnlyFirstLine: 'false'
+    visualization: list-view
+    title: Parsed log
+    type: query
+  aa52868f-4bbf-41a3-aae4-4071593d9be8:
+    x: 0
+    y: 7
+    description: ''
+    height: 4
+    queryString: count() | eval(_count = _count / 60)
+    visualization: simple-gauge
+    start: 1m
+    width: 2
+    title: logs per sec
+    type: query
+  bc1a171a-f1e3-44d6-b4cb-0db6fefbdc97:
+    x: 2
+    y: 7
+    description: ''
+    height: 4
+    queryString: groupBy(errCode)
+    start: 24h
+    width: 4
+    options:
+      innerRadius: 28
+    visualization: pie-chart
+    title: Count by Message Code
+    type: query
