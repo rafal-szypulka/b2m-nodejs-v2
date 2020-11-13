@@ -21,7 +21,7 @@ According to the [12-factor](https://12factor.net/) application guidelines, logs
 During this lab we will run the Elastic Stack (Elasticsearch, Logstash, Kibana) in docker-compose.
 The ELK configuration in this lab is based on [https://github.com/deviantony/docker-elk](https://github.com/deviantony/docker-elk) (6.8.x branch).
 
-Briefly review the simple Logstash configuration we will use for this lab: `docker-elk/logstash/pipeline/logstash.conf`:
+Briefly review the simple Logstash configuration we will use for this lab: `lab-1/logstash/pipeline/logstash.conf`:
 
 ```
 input {
@@ -57,23 +57,23 @@ The above will configure Logstash input to use `gelf` (Graylog Extended Log Form
 1). Start the Elastic stack:
    
 ```
-cd b2m-nodejs-v2/lab-1/docker-elk
+cd b2m-nodejs-v2/lab-1
 docker-compose build
 docker-compose up -d
 ```
 >Note, it may take a while for the first time, because it will download the ELK images from DockerHub and build an image for our Node.js application.
 
 2). While waiting for containers, review the configuration of our logging lab.
-- `b2m-nodejs-v2/docker-elk/docker-compose.yaml` - this is the main config file for docker-compose stack which specifies all options for all containers in the stack.
+- `b2m-nodejs-v2/lab-1/docker-compose.yaml` - this is the main config file for docker-compose stack which specifies all options for all containers in the stack.
 - `b2m-nodejs-v2/lab-1/app/server.js` - the source code of our sample Node.js application.
 - `b2m-nodejs-v2/lab-1/app/Dockerfile` - this file is used to build your app docker image.
 
-3). After the `docker-compose` completed the startup, verify you can access Kibana on `http://localhost:5601`.
+3). After the `docker-compose` completed the startup, verify you can access Kibana on `http://<your-hostname>:5601`.
 
 Logon using user: `elastic`, password: `changeme`
 
 4). [Import](https://www.elastic.co/guide/en/kibana/6.8/managing-saved-objects.html) the index pattern, saved search, visualizations and dashboard from the provided `kibana.json` file. We will use them in the next part of the lab:
-- Go to Management -> Kibana/Saved Objects -> Import and select the `b2m-nodejs-v2/kibana.json` file.
+- Go to Management -> Kibana/Saved Objects -> Import and select the `b2m-nodejs-v2/lab-1/kibana.json` file.
 
 You should see the following Saved Objects imported:
 
@@ -136,7 +136,7 @@ msg = 'RSAP0010E: Severe problem detected'
 logger.error(msg, {"errorCode": "RSAP0010E", "transactionTime": delay})
 ```
 
-After these changes the expected STDOUT is:
+After these changes the expected application STDOUT is:
 
 ```json
 {"errCode":"RSAP0001I","transactionTime":81,"level":"info","message":"RSAP0001I: Transaction OK","timestamp":"2019-02-27T07:34:49.625Z"}
@@ -180,7 +180,7 @@ Kibana Dashboard is a collection of **Visualizations**. If you are interested in
 >**Stop the docker-compose stack before starting the next exercise:**
 
 ```
-cd b2m-nodejs-v2/lab-1/docker-elk
+cd b2m-nodejs-v2/lab-1
 docker-compose down -v
 ```
 
@@ -196,20 +196,21 @@ More on https://www.humio.com/log-management#features
 
 ### Instrument the Node.js app with logging
 
-If you did the Lab 1, you don't have to do anything - we will use exactly the same instrumentation, just copy and replace the `b2m-nodejs-v2/lab-1/app/server.js` to `b2m-nodejs-v2/lab-2/app/server.js`.
+If you did the app instrumentation part of the Lab 1, you don't have to do anything - we will use exactly the same instrumentation, just copy and replace the `b2m-nodejs-v2/lab-1/app/server.js` to `b2m-nodejs-v2/lab-2/app/server.js`.
 
 If you start with Lab 2, do the instrumentation steps with `winston` logging library as described in chapter [Instrument the Node.js app with logging](#instrument-the-nodejs-app-with-logging).
 
 
 ### Deploy Humio with Docker Compose
 
-Start Humio with our Node.js app in docker-compose:
+1). Start Humio with our Node.js app in docker-compose:
 
 ```
 cd b2m-nodejs-v2/lab-2
 ./start-lab2.sh
 ```
 >Note, it may take a while for the first time, because it will download the Humio image from DockerHub.
+Ignore the error: `"No such service: b2m-nodejs"`, we will add it later.
 
 While waiting for containers, review the configuration of our logging lab.
 
@@ -217,66 +218,82 @@ While waiting for containers, review the configuration of our logging lab.
 - `b2m-nodejs-v2/lab-2/app/server.js` - the source code of our sample Node.js application instrumented with logging.
 - `b2m-nodejs-v2/lab-2/app/Dockerfile` - this file is used to build your app docker image.
 
-Access the Humio UI using internet browser on http://localhost:8080
-Click `Add item` and create `b2m-nodejs` repository.
-Click on the new repository link and go to `Settings -> API Tokens`. Copy the default token.
+2). Access the Humio UI using internet browser on http://\<your-hostname>:8080
+3). Click `Add item` and create `b2m-nodejs` repository.
+4). Inside new repository,  go to `Settings -> API Tokens`. Copy the default token.
 
-Stop the Humio stack:
+![](images/2020-11-13-13-45-14.png)
+
+5). Stop the Humio stack:
 ```
 cd b2m-nodejs-v2/lab-2
 docker-compose down
 ```
 
-Edit the `b2m-nodejs-v2/lab-2/docker-compose.yaml` and paste the token as value of `splunk-token` (remember to put the token in quotes).
-Uncomment the whole `b2m-nodejs` section (together with all its options).
+7). Edit the `b2m-nodejs-v2/lab-2/docker-compose.yaml` and paste the token as value of `splunk-token` (remember to put the token in quotes).
+8). Uncomment the whole `b2m-nodejs` section (together with all its options). Make sure the YAML indentation is correct (tip: remove `#` character together with one space character).
 
-Start the Humio and Node.js stack:
+9). Start the Humio and Node.js stack:
 
 ```
 cd b2m-nodejs-v2/lab-2
 ./start-lab2.sh
 ```
-Access the Humio UI using internet browser on http://localhost:8080
+10). Access the Humio UI using internet browser on http://localhost:8080
 
-Go to `b2m-nodejs` repository and select `Parsers`:
+11). Go to `b2m-nodejs` repository and select `Parsers`. Click on `+ New Parser`. Name it `b2m-json`.
 
-Click on `+ New Parser`. Name it `b2m-json`.
-
-Paste the following Parser script:
+12). Replace the default content on the left side with the following parser script:
 
 ```
 parseJson()|parseJson(line)
 ```
-Why we parse JSON twice? Docker wraps the application log (which we emit as JSON) in its own JSON envelope, so first we parse docker JSON and then pare JSON contents of already extracted field `line`. Note the cool `|` characted which works exactly the same way as in Linux or Unix shell.
 
-On the right side of the Parsers editor you can test your parser. Paste this line:
+On the right side of the `Parsers` editor you can test your parser. Delete the default tests, click `+ Add Example` and paste this line (which looks similar to the log line emitted by our app docker container):
 
 ```
 {"line":"{\"errCode\":\"RSAP0001I\",\"transactionTime\":43,\"level\":\"info\",\"message\":\"RSAP0001I: Transaction OK\",\"timestamp\":\"2020-11-11T22:35:20.949Z\"}","source":"stdout","tag":"ee4799aa3c53"}
 ```
-and verify extracted fileds.
+and verify extracted fields. Save your new Parser.
 
-Save your new Parser.
+![](images/2020-11-13-13-43-04.png)
 
-Go to Settings->API tokens and select your newly defined parse in the `Assigned Parser` option of the `default` API token.
+>Why we parse JSON twice? 
+Docker wraps the application log (which the app emits as JSON) in its own JSON envelope, so first we parse docker JSON and then parse JSON contents of already extracted field `line`. Note the `|` character (which works exactly the same way as in Linux or Unix shell!).
 
-Simulate a couple of transactions using your web browser or `curl` by accessing http://localhost:3001/checkout:
+13). Go to `Settings->API` tokens and select your newly defined parser in the `Assigned Parser` option of the `default` API token.
+
+![](images/2020-11-13-13-40-43.png)
+
+14). Simulate a couple of transactions using your web browser or `curl` by accessing http://localhost:3002/checkout:
 
 ```
-for i in {1..10000}; do curl -w "\n" http://localhost:3001/checkout; done
+for i in {1..10000}; do curl -w "\n" http://localhost:3002/checkout; done
 ```
 
-Verify results in the Search view.
+Verify results in the `Search` view.
 
-Import the Humio dashboard provided with this lab `humio-dashboard.yaml`:
+15). Import the Humio dashboard provided with this lab `humio-dashboard.yaml`:
 - Go to `Dashboards`, click `+ New Dashboard`
-- Select `Template file` Option and name it `B2M Node.js`
+- Name your dashboard `B2M Node.js` and select `Template file` option. 
 - Click `Upload Template` and select `b2m-nodejs-v2/lab-2/humio-dashboard.yaml`
 - Click `Create Dashboard`
 
-Access `B2M Node.js` dashboard. Generate more application requests with:
+16). Access `B2M Node.js` dashboard. Generate more application requests with:
 
 ```
-for i in {1..10000}; do curl -w "\n" http://localhost:3001/checkout; done
+for i in {1..10000}; do curl -w "\n" http://localhost:3002/checkout; done
 ```
+![](images/2020-11-13-13-31-36.png)
 
+17). Click the `Edit` button and then `Show Queries`. You will see the Humio queries used to produce data for every chart.
+
+![](images/2020-11-13-13-35-21.png)
+
+
+>**Stop the docker-compose stack before starting the next exercise:**
+
+```
+cd b2m-nodejs-v2/lab-2
+docker-compose down -v
+```

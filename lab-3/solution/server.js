@@ -20,7 +20,7 @@ var msg;
 const metricsInterval = Prometheus.collectDefaultMetrics()
 
 const app = express()
-const port = process.env.PORT || 3001
+const port = process.env.PORT || 3003
 
 const checkoutsTotal = new Prometheus.Counter({
   name: 'checkouts_total',

@@ -1,8 +1,8 @@
-## What to instrument - the RED method
+## Metrics instrumentation - the RED method
 
 One of the most important decisions to make when setting up web application monitoring is deciding on the type of metrics you need to collect about your app. The metrics you choose simplifies troubleshooting when a problem occurs and also enables you to stay on top of the stability of your services and infrastructure.
 
-The [RED method](https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/) follows on the principles outlined in the [Four Golden Signals](https://landing.google.com/sre/book/chapters/monitoring-distributed-systems.html#xref_monitoring_golden-signals) developed by Site Reliability Engineers, which focuses on measuring things that end-users care about when using your web services. With the RED method, three key metrics are instrumented that monitor every microservice in your architecture:
+The [RED method](https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/) follows on the principles outlined in the [Four Golden Signals](https://landing.google.com/sre/book/chapters/monitoring-distributed-systems.html#xref_monitoring_golden-signals), which focuses on measuring things that end-users care about when using your web services. With the RED method, three key metrics are instrumented that monitor every microservice in your architecture:
 
 - (Request) Rate - the number of requests, per second, your services are serving.
 - (Request) Errors - the number of failed requests per second.
@@ -10,26 +10,45 @@ The [RED method](https://www.weave.works/blog/the-red-method-key-metrics-for-mic
 
 Rate, Errors and Duration attempt to cover the most obvious web service issues. These metrics also capture an error rate that is expressed as a proportion of request rate.
 
+Of course, this is just a good starting point for metrics instrumentation. Generally, the more metrics we collect from an application the better. 
+
+>**Instrument first, ask questions later**
+During development you will never know what questions you need to ask later. Software needs good instrumentation, it’s not optional. Metrics are cheap. Use them generously. The First and the most important rule, if you have to remember only one thing remember this one. Instrument all the things!
+>                         
+>[The Zen of Prometheus](https://the-zen-of-prometheus.netlify.app/)
+
+
+## Deploy the monitoring stack in Docker Compose
+
+1). Start the monitoring stack:
+   
+```
+cd b2m-nodejs-v2/lab-3
+docker-compose build
+docker-compose up -d
+```
+>Note, it may take a while for the first time, because it will download the monitoring stack images from DockerHub and build an image for our Node.js application.
+
+2). While waiting for containers, review the configuration of our monitoring lab.
+- `b2m-nodejs-v2/lab-3/docker-compose.yaml` - this is the main config file for docker-compose stack which specifies all options for all containers in the stack.
+- `b2m-nodejs-v2/lab-3/app/server.js` - the source code of our sample Node.js application.
+- `b2m-nodejs-v2/lab-3/app/Dockerfile` - this file is used to build your app docker image.
+
+
 ## Instrument application code with Node.js client library for Prometheus
 
-Go to the directory where the `server.js` file is located and run the following command to install and configure a [prom-client](https://github.com/siimon/prom-client) - a Node.js client library for Prometheus.
-
-```
-cd ~/b2m-nodejs/src
-npm install --save prom-client
-```
-this should add the following dependency to the `package.json`:
+Go to the directory `b2m-nodejs-v2/lab-3/app` where the `server.js` file is located and add the following dependency to the `package.json`:
 
 ```
     "prom-client": "^11.2.1"
 ```
 
 ### Enable default metrics
-There are some default metrics recommended by Prometheus
-[itself](https://prometheus.io/docs/instrumenting/writing_clientlibs/#standard-and-runtime-collectors).
+There are some default metrics recommended by Prometheus [itself](https://prometheus.io/docs/instrumenting/writing_clientlibs/#standard-and-runtime-collectors).
+
 To collect these, call `collectDefaultMetrics`
 
-NOTE: Some of the metrics, concerning File Descriptors and Memory, are only available on Linux.
+>Some of the metrics, concerning File Descriptors and Memory, are only available on Linux.
 
 In addition, some Node-specific metrics are included, such as event loop lag,
 active handles and Node.js version. See what metrics there are in

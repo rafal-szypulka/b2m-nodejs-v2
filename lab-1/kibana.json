@@ -136,7 +136,7 @@
       ],
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"c13869a0-39be-11e9-b45e-4baf6f4aff9a\",\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"container_name: \\\"docker-elk_b2m-nodejs_1\\\"\",\"language\":\"lucene\"},\"filter\":[]}"
+        "searchSourceJSON": "{\"index\":\"c13869a0-39be-11e9-b45e-4baf6f4aff9a\",\"highlightAll\":true,\"version\":true,\"query\":{\"language\":\"lucene\",\"query\":\"container_name: \\\"lab-1_b2m-nodejs_1\\\"\"},\"filter\":[]}"
       }
     },
     "_meta": {

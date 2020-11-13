@@ -29,22 +29,22 @@ services:
       timeout: 10s
       retries: 5
 
-  # b2m-nodejs:
-  #   build: ./app
-  #   restart: always
-  #   links:
-  #     - humio
-  #   depends_on:
-  #     - humio
-  #   networks:
-  #     - humio
-  #   ports:
-  #     - "3001:3001"
-  #   logging:
-  #     driver: "splunk"
-  #     options:
-  #       splunk-token: "put-ingest-api-token-here"
-  #       splunk-url: "http://localhost:8080"
+  b2m-nodejs:
+    build: ./app
+    restart: always
+    links:
+      - humio
+    depends_on:
+      - humio
+    networks:
+      - humio
+    ports:
+      - "3001:3001"
+    logging:
+      driver: "splunk"
+      options:
+        splunk-token: "put-ingest-api-token-here"
+        splunk-url: "http://localhost:8080"
 
 networks:
   humio:
