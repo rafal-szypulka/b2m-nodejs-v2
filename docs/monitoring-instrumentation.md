@@ -15,7 +15,7 @@ Of course, this is just a good starting point for metrics instrumentation. Gener
 >**Instrument first, ask questions later**
 During development you will never know what questions you need to ask later. Software needs good instrumentation, it’s not optional. Metrics are cheap. Use them generously. The First and the most important rule, if you have to remember only one thing remember this one. Instrument all the things!
 >                         
->[The Zen of Prometheus](https://the-zen-of-prometheus.netlify.app/)
+> <div style="text-align: right"> <a href="https://the-zen-of-prometheus.netlify.app/"> The Zen of Prometheus</a></div>
 
 
 ## Deploy the monitoring stack in Docker Compose
