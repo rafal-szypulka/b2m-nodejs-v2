@@ -4,10 +4,10 @@ site_url: https://rafal-szypulka.github.io/b2m-nodejs-v2/
 nav:
     - 1. Introduction: index.md
     - 2. Node.js Logging: logging.md
-    - 4. Node.js Monitoring: monitoring-instrumentation.md
-    - 5. Prometheus and Grafana configuration: Prometheus-Grafana.md
-    - 6. Deploy to RedHat OpenShift 4.2: OCP.md
-    - Test: "https://ibm-cloud-architecture.github.io/learning-distributed-tracing-101/docs/lab-jaeger-nodejs.html"
+    - 3. Node.js Monitoring: monitoring-instrumentation.md
+    - 4. Prometheus and Grafana configuration: Prometheus-Grafana.md
+    - 5. Deploy to RedHat OpenShift 4.2: OCP.md
+    - 6. Distributed Tracing labs: "https://ibm-cloud-architecture.github.io/learning-distributed-tracing-101/docs/lab-jaeger-nodejs.html"
     - About: about.md
 theme:
   name: 'material'
