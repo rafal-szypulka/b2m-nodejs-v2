@@ -481,19 +481,6 @@
                 
                 
                 <h1 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h1>
-<ul>
-<li><a href="#logging">Logging</a></li>
-<li><a href="#lab-1---nodejs-app-logging-with-elastic-stack">Lab 1 - Node.js app logging with Elastic stack</a><ul>
-<li><a href="#deploy-a-local-elastic-stack-with-docker-compose">Deploy a local Elastic stack with Docker Compose</a></li>
-<li><a href="#instrument-the-nodejs-app-with-logging">Instrument the Node.js app with logging</a></li>
-</ul>
-</li>
-<li><a href="#lab-2---nodejs-app-logging-with-humio">Lab 2 - Node.js app logging with Humio</a><ul>
-<li><a href="#instrument-the-nodejs-app-with-logging-1">Instrument the Node.js app with logging</a></li>
-<li><a href="#deploy-humio-with-docker-compose">Deploy Humio with Docker Compose</a></li>
-</ul>
-</li>
-</ul>
 <p>A production service should have both logging and monitoring. Monitoring provides a real-time and historical view on the system and application state, and alerts you in case a situation is met. In most cases, a monitoring alert is simply a trigger for you to start an investigation. Monitoring shows the symptoms of problems. Logs provide details and state on individual transactions, so you can fully understand the cause of problems.</p>
 <p>Logs provide visibility into the behavior of a running app, they are one of the most fundamental tools for debugging and finding issues within your application. If structured correctly, logs can contain a wealth of information about a specific event. Logs can tell us not only when the event took place, but also provide us with details as to the root cause. Therefore, it is important that the log entries are readable to humans and machines. </p>
 <p>According to the <a href="https://12factor.net/">12-factor</a> application guidelines, logs are the stream of aggregated, time-ordered events. A twelve-factor app never concerns itself with routing or storage of its output stream. It should not attempt to write to or manage log files. Instead, each running process writes its event stream, unbuffered, to stdout. If you deviate from these guidelines, make sure that you address the operational needs for log files, such as logging to local files and applying log rotation policies.</p>
