@@ -93,7 +93,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#what-to-instrument-the-red-method" tabindex="1" class="md-skip">
+      <a href="#metrics-instrumentation-the-red-method" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -283,8 +283,15 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-to-instrument-the-red-method" title="What to instrument - the RED method" class="md-nav__link">
-    What to instrument - the RED method
+  <a href="#metrics-instrumentation-the-red-method" title="Metrics instrumentation - the RED method" class="md-nav__link">
+    Metrics instrumentation - the RED method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-the-monitoring-stack-in-docker-compose" title="Deploy the monitoring stack in Docker Compose" class="md-nav__link">
+    Deploy the monitoring stack in Docker Compose
   </a>
   
 </li>
@@ -428,8 +435,15 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-to-instrument-the-red-method" title="What to instrument - the RED method" class="md-nav__link">
-    What to instrument - the RED method
+  <a href="#metrics-instrumentation-the-red-method" title="Metrics instrumentation - the RED method" class="md-nav__link">
+    Metrics instrumentation - the RED method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-the-monitoring-stack-in-docker-compose" title="Deploy the monitoring stack in Docker Compose" class="md-nav__link">
+    Deploy the monitoring stack in Docker Compose
   </a>
   
 </li>
@@ -516,32 +530,48 @@
                 
                   <h1>3. Node.js Monitoring</h1>
                 
-                <h2 id="what-to-instrument-the-red-method">What to instrument - the RED method<a class="headerlink" href="#what-to-instrument-the-red-method" title="Permanent link">&para;</a></h2>
+                <h2 id="metrics-instrumentation-the-red-method">Metrics instrumentation - the RED method<a class="headerlink" href="#metrics-instrumentation-the-red-method" title="Permanent link">&para;</a></h2>
 <p>One of the most important decisions to make when setting up web application monitoring is deciding on the type of metrics you need to collect about your app. The metrics you choose simplifies troubleshooting when a problem occurs and also enables you to stay on top of the stability of your services and infrastructure.</p>
-<p>The <a href="https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/">RED method</a> follows on the principles outlined in the <a href="https://landing.google.com/sre/book/chapters/monitoring-distributed-systems.html#xref_monitoring_golden-signals">Four Golden Signals</a> developed by Site Reliability Engineers, which focuses on measuring things that end-users care about when using your web services. With the RED method, three key metrics are instrumented that monitor every microservice in your architecture:</p>
+<p>The <a href="https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/">RED method</a> follows on the principles outlined in the <a href="https://landing.google.com/sre/book/chapters/monitoring-distributed-systems.html#xref_monitoring_golden-signals">Four Golden Signals</a>, which focuses on measuring things that end-users care about when using your web services. With the RED method, three key metrics are instrumented that monitor every microservice in your architecture:</p>
 <ul>
 <li>(Request) Rate - the number of requests, per second, your services are serving.</li>
 <li>(Request) Errors - the number of failed requests per second.</li>
 <li>(Request) Duration - The amount of time each request takes expressed as a time interval.</li>
 </ul>
 <p>Rate, Errors and Duration attempt to cover the most obvious web service issues. These metrics also capture an error rate that is expressed as a proportion of request rate.</p>
-<h2 id="instrument-application-code-with-nodejs-client-library-for-prometheus">Instrument application code with Node.js client library for Prometheus<a class="headerlink" href="#instrument-application-code-with-nodejs-client-library-for-prometheus" title="Permanent link">&para;</a></h2>
-<p>Go to the directory where the <code>server.js</code> file is located and run the following command to install and configure a <a href="https://github.com/siimon/prom-client">prom-client</a> - a Node.js client library for Prometheus.</p>
-<div class="codehilite"><pre><span></span>cd ~/b2m-nodejs/src
-npm install --save prom-client
+<p>Of course, this is just a good starting point for metrics instrumentation. Generally, the more metrics we collect from an application the better. </p>
+<blockquote>
+<p><strong>Instrument first, ask questions later</strong>
+During development you will never know what questions you need to ask later. Software needs good instrumentation, it’s not optional. Metrics are cheap. Use them generously. The First and the most important rule, if you have to remember only one thing remember this one. Instrument all the things!</p>
+<p><a href="https://the-zen-of-prometheus.netlify.app/">The Zen of Prometheus</a></p>
+</blockquote>
+<h2 id="deploy-the-monitoring-stack-in-docker-compose">Deploy the monitoring stack in Docker Compose<a class="headerlink" href="#deploy-the-monitoring-stack-in-docker-compose" title="Permanent link">&para;</a></h2>
+<p>1). Start the monitoring stack:</p>
+<div class="codehilite"><pre><span></span>cd b2m-nodejs-v2/lab-3
+docker-compose build
+docker-compose up -d
 </pre></div>
 
 
-<p>this should add the following dependency to the <code>package.json</code>:</p>
+<blockquote>
+<p>Note, it may take a while for the first time, because it will download the monitoring stack images from DockerHub and build an image for our Node.js application.</p>
+</blockquote>
+<p>2). While waiting for containers, review the configuration of our monitoring lab.
+- <code>b2m-nodejs-v2/lab-3/docker-compose.yaml</code> - this is the main config file for docker-compose stack which specifies all options for all containers in the stack.
+- <code>b2m-nodejs-v2/lab-3/app/server.js</code> - the source code of our sample Node.js application.
+- <code>b2m-nodejs-v2/lab-3/app/Dockerfile</code> - this file is used to build your app docker image.</p>
+<h2 id="instrument-application-code-with-nodejs-client-library-for-prometheus">Instrument application code with Node.js client library for Prometheus<a class="headerlink" href="#instrument-application-code-with-nodejs-client-library-for-prometheus" title="Permanent link">&para;</a></h2>
+<p>Go to the directory <code>b2m-nodejs-v2/lab-3/app</code> where the <code>server.js</code> file is located and add the following dependency to the <code>package.json</code>:</p>
 <div class="codehilite"><pre><span></span>    &quot;prom-client&quot;: &quot;^11.2.1&quot;
 </pre></div>
 
 
 <h3 id="enable-default-metrics">Enable default metrics<a class="headerlink" href="#enable-default-metrics" title="Permanent link">&para;</a></h3>
-<p>There are some default metrics recommended by Prometheus
-<a href="https://prometheus.io/docs/instrumenting/writing_clientlibs/#standard-and-runtime-collectors">itself</a>.
-To collect these, call <code>collectDefaultMetrics</code></p>
-<p>NOTE: Some of the metrics, concerning File Descriptors and Memory, are only available on Linux.</p>
+<p>There are some default metrics recommended by Prometheus <a href="https://prometheus.io/docs/instrumenting/writing_clientlibs/#standard-and-runtime-collectors">itself</a>.</p>
+<p>To collect these, call <code>collectDefaultMetrics</code></p>
+<blockquote>
+<p>Some of the metrics, concerning File Descriptors and Memory, are only available on Linux.</p>
+</blockquote>
 <p>In addition, some Node-specific metrics are included, such as event loop lag,
 active handles and Node.js version. See what metrics there are in
 <a href="https://github.com/siimon/prom-client/lib/metrics">https://github.com/siimon/prom-client/lib/metrics</a>.</p>
