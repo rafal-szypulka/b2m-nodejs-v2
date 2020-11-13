@@ -93,7 +93,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#build-to-manage-nodejs-application-monitoring-and-logging-lab" tabindex="1" class="md-skip">
+      <a href="#build-to-manage-nodejs-observability-labs" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -412,8 +412,8 @@
                   <a href="https://github.com/rafal-szypulka/b2m-nodejs-v2/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="build-to-manage-nodejs-application-monitoring-and-logging-lab">Build to Manage - Node.js application monitoring and logging lab<a class="headerlink" href="#build-to-manage-nodejs-application-monitoring-and-logging-lab" title="Permanent link">&para;</a></h1>
-<p>During this lab we will instrument a sample Node.js application for logging to use with log analytics tools like <a href="http://elastic.co">Elastic stack</a> and <a href="https://humio.com">Humio</a> as well as for monitoring with <a href="https://prometheus.io">Prometheus</a> and <a href="https://grafana.com">Grafana</a>.</p>
+                <h1 id="build-to-manage-nodejs-observability-labs">Build to Manage - Node.js Observability labs<a class="headerlink" href="#build-to-manage-nodejs-observability-labs" title="Permanent link">&para;</a></h1>
+<p>During this lab we will instrument a sample Node.js application for logging in order to use with log analytics tools like <a href="http://elastic.co">Elastic stack</a> and <a href="https://humio.com">Humio</a> as well as with metrics for monitoring with <a href="https://prometheus.io">Prometheus</a> and <a href="https://grafana.com">Grafana</a>.</p>
 <p>Instrumentation of the application code for monitoring and logging is part of the general concept we call <strong>Build to Manage</strong>. It specifies the practice of activities developers can do in order to provide manageability aspects as part of an application release.</p>
 <h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">&para;</a></h2>
 <ul>
@@ -422,18 +422,21 @@
 <li>Lab 3: Node.js metrics instrumentation and monitoring with Prometheus and Grafana</li>
 </ul>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
-<p>Install the following software on your workstation.</p>
+<p>Install the following software on your workstation. You may use your laptop for all the labs, but probably a better idea is to use a clean Linux VM.
+If you have access and would like to use <a href="fyre.ibm.com">Fyre</a>, I'd recommend to deploy Ubuntu 20.04 ember with 8 core CPU and 16 GB RAM (for this setup, installation of all prerequisites is as easy as
+<code>apt install docker-compose</code>). </p>
 <ul>
 <li><a href="https://www.docker.com/products/docker-desktop">Docker for Desktop</a></li>
 <li><a href="https://docs.docker.com/compose/install">Docker Compose</a></li>
-<li>Openshift <code>oc</code> CLI</li>
+<li>Openshift <code>oc</code> CLI (optional)</li>
+<li><code>curl</code></li>
 </ul>
 <p>Clone the following repository from GitHub.</p>
 <div class="codehilite"><pre><span></span>git clone https://github.com/rafal-szypulka/b2m-nodejs-v2
 </pre></div>
 
 
-<p>Most of the commands should be executed from the <code>b2m-nodejs-v2/lab-x/app</code> directory:</p>
+<p>Most of the commands should be executed from the <code>b2m-nodejs-v2/lab-x</code> directory:</p>
 <blockquote>
 <p>The solution to the lab is located in the directory b2m-nodejs-v2/lab-x/solution</p>
 </blockquote>
