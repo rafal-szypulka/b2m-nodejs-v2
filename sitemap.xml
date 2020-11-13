@@ -11,12 +11,7 @@
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://rafal-szypulka.github.io/b2m-nodejs-v2/monitoring-instrumentation/</loc>
-     <lastmod>2020-11-13</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    <url>
-     <loc>https://rafal-szypulka.github.io/b2m-nodejs-v2/Prometheus-Grafana/</loc>
+     <loc>https://rafal-szypulka.github.io/b2m-nodejs-v2/monitoring/</loc>
      <lastmod>2020-11-13</lastmod>
      <changefreq>daily</changefreq>
     </url>
