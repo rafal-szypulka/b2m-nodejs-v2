@@ -330,8 +330,9 @@ Check the status of scraping targets in Prometheus UI -> Status -> Targets
 Generate some application load before running the queries:
 
 ```
-for i in {1..10000}; do curl -w "\n" http://localhost:3003/checkout; done
+for i in {1..10000}; do curl -w "\n" http://<your-hostname>:3003/checkout; done
 ```
+>If you run the lab locally, you can use the `localhost`
 
 Run the following example PromQL queries using the Prometheus UI.
 
@@ -423,7 +424,7 @@ docker-compose down
 docker-compose up -d
 ```
 
-Alerts can be listed via Prometheus UI: [http://localhost:9090/alerts](http://localhost:9090/alerts)
+Alerts can be listed via Prometheus UI: `http://<your-hostname>:9090/alerts`
 
 States of active alerts: 
 

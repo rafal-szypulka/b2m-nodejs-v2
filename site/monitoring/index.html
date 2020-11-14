@@ -1036,10 +1036,13 @@ http_request_duration_ms_count{method=&quot;GET&quot;,route=&quot;/checkout&quot
 Check the status of scraping targets in Prometheus UI -&gt; Status -&gt; Targets </p>
 <h2 id="run-example-promql-queries">Run example PromQL queries<a class="headerlink" href="#run-example-promql-queries" title="Permanent link">&para;</a></h2>
 <p>Generate some application load before running the queries:</p>
-<div class="codehilite"><pre><span></span>for i in {1..10000}; do curl -w &quot;\n&quot; http://localhost:3003/checkout; done
+<div class="codehilite"><pre><span></span>for i in {1..10000}; do curl -w &quot;\n&quot; http://&lt;your-hostname&gt;:3003/checkout; done
 </pre></div>
 
 
+<blockquote>
+<p>If you run the lab locally, you can use the <code>localhost</code></p>
+</blockquote>
 <p>Run the following example PromQL queries using the Prometheus UI.</p>
 <h3 id="throughput">Throughput<a class="headerlink" href="#throughput" title="Permanent link">&para;</a></h3>
 <h4 id="error-rate">Error rate<a class="headerlink" href="#error-rate" title="Permanent link">&para;</a></h4>
@@ -1112,7 +1115,7 @@ docker-compose up -d
 </pre></div>
 
 
-<p>Alerts can be listed via Prometheus UI: <a href="http://localhost:9090/alerts">http://localhost:9090/alerts</a></p>
+<p>Alerts can be listed via Prometheus UI: <code>http://&lt;your-hostname&gt;:9090/alerts</code></p>
 <p>States of active alerts: </p>
 <ul>
 <li><code>pending</code>:</li>

@@ -63,6 +63,7 @@ docker-compose up -d
 3). After the `docker-compose` completed the startup, verify you can access Kibana on `http://<your-hostname>:5601`.
 
 Logon using user: `elastic`, password: `changeme`
+>If you run the lab locally, you can use the `localhost`
 
 4). [Import](https://www.elastic.co/guide/en/kibana/6.8/managing-saved-objects.html) the index pattern, saved search, visualizations and dashboard from the provided `kibana.json` file. We will use them in the next part of the lab:
 - Go to Management -> Kibana/Saved Objects -> Import and select the `b2m-nodejs-v2/lab-1/kibana.json` file.
@@ -139,7 +140,7 @@ After these changes the expected application STDOUT is:
 {"errCode":"RSAP0001I","transactionTime":62,"level":"info","message":"RSAP0001I: Transaction OK","timestamp":"2019-02-27T07:34:51.156Z"}
 ```
 
-3). Rebuild the Node.js app contaner:
+3). Rebuild the Node.js app container:
 
 ```
 cd b2m-nodejs-v2/lab-1
@@ -148,13 +149,14 @@ docker-compose build
 docker-compose up -d
 ```
 
-4). Simulate a couple of transactions using your web browser or `curl` by accessing `http://localhost:3001/checkout`:
+4). Simulate a couple of transactions using your web browser or `curl` by accessing `http://<your-hostname>:3001/checkout`:
 
 ```
-for i in {1..10000}; do curl -w "\n" http://localhost:3001/checkout; done
+for i in {1..10000}; do curl -w "\n" http://<your-hostname>:3001/checkout; done
 ```
+>If you run the lab locally, you can use the `localhost`
 
-and check out the Kibana (http://localhost:5601 elastic/changeme):
+and check out the Kibana (`http://<your-hostname>:5601` `elastic/changeme)`:
 - The **Discover** view should be similar to:
 
 ![](images/2020-11-11-21-11-06.png)
@@ -210,7 +212,7 @@ While waiting for containers, review the configuration of our logging lab.
 - `b2m-nodejs-v2/lab-2/app/server.js` - the source code of our sample Node.js application instrumented with logging.
 - `b2m-nodejs-v2/lab-2/app/Dockerfile` - this file is used to build your app docker image.
 
-2). Access the Humio UI using internet browser on http://\<your-hostname>:8080
+2). Access the Humio UI using internet browser on `http://<your-hostname>:8080` (If you run the lab locally, you can use the `localhost`)
 3). Click `Add item` and create `b2m-nodejs` repository.
 4). Inside new repository,  go to `Settings -> API Tokens`. Copy the default token.
 
@@ -231,7 +233,7 @@ docker-compose down
 cd b2m-nodejs-v2/lab-2
 ./start-lab2.sh
 ```
-10). Access the Humio UI using internet browser on http://localhost:8080
+10). Access the Humio UI using internet browser on `http://<your-hostname>:8080` (If you run the lab locally, you can use the `localhost`).
 
 11). Go to `b2m-nodejs` repository and select `Parsers`. Click on `+ New Parser`. Name it `b2m-json`.
 
@@ -257,11 +259,13 @@ Docker wraps the application log (which the app emits as JSON) in its own JSON e
 
 ![](images/2020-11-13-13-40-43.png)
 
-14). Simulate a couple of transactions using your web browser or `curl` by accessing http://localhost:3002/checkout:
+14). Simulate a couple of transactions using your web browser or `curl` by accessing `http://<your-hostname>:3002/checkout`:
 
 ```
 for i in {1..10000}; do curl -w "\n" http://localhost:3002/checkout; done
 ```
+
+>If you run the lab locally, you can use the `localhost`
 
 Verify results in the `Search` view.
 
