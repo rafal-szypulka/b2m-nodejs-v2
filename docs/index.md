@@ -1,13 +1,15 @@
 # Build to Manage - Node.js Observability labs
 
-During this lab we will instrument a sample Node.js application for logging in order to use with log analytics tools like [Elastic stack](http://elastic.co) and [Humio](https://humio.com) as well as with metrics for monitoring with [Prometheus](https://prometheus.io) and [Grafana](https://grafana.com).
+During this lab we will instrument a simple Node.js application for logging in order to use with log analytics tools like [Elastic stack](http://elastic.co) and [Humio](https://humio.com) as well as with metrics for monitoring with [Prometheus](https://prometheus.io) and [Grafana](https://grafana.com).
 
-Instrumentation of the application code for monitoring and logging is part of the general concept we call **Build to Manage**. It specifies the practice of activities developers can do in order to provide manageability aspects as part of an application release.
+Instrumentation of the application code with metrics, logging and tracing is part of the general concept we call **Build to Manage**. It specifies the practice of activities developers can do in order to provide manageability aspects as part of an application release.
 
 ## Objectives
 - Lab 1: Node.js logging with Winston and ELK stack
 - Lab 2: Node.js logging with Winston and Humio
 - Lab 3: Node.js metrics instrumentation and monitoring with Prometheus and Grafana
+- Lab 4: Configure application monitoring with Prometheus on Openshift
+- Distributed tracing labs
 
 ## Prerequisites
 Install the following software on your workstation. You may use your laptop for all the labs, but probably a better idea is to use a clean Linux VM.
