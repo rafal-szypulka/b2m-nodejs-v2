@@ -1,21 +1,12 @@
-# my global config
 global:
-  scrape_interval:     20s # By default, scrape targets every 15 seconds.
-  evaluation_interval: 20s # By default, scrape targets every 15 seconds.
-  # scrape_timeout is set to the global default (10s).
-
-  # Attach these labels to any time series or alerts when communicating with
-  # external systems (federation, remote storage, Alertmanager).
+  scrape_interval:     20s
+  evaluation_interval: 20s
   external_labels:
       monitor: 'my-project'
 
-# Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
-  - 'alert.rules'
-  # - "first.rules"
-  # - "second.rules"
+  - 'alert-rules.yml'
 
-# alert
 alerting:
   alertmanagers:
   - scheme: http
@@ -23,40 +14,21 @@ alerting:
     - targets:
       - "alertmanager:9093"
 
-# A scrape configuration containing exactly one endpoint to scrape:
-# Here it's Prometheus itself.
 scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+- job_name: 'prometheus'
+  scrape_interval: 20s
+  static_configs:
+  - targets: ['localhost:9090']
 
-  - job_name: 'prometheus'
-    scrape_interval: 20s
-    static_configs:
-         - targets: ['localhost:9090']
+- job_name: 'cadvisor'
+  scrape_interval: 20s
+  static_configs:
+  - targets: ['cadvisor:8080']
 
+- job_name: 'b2m-nodejs'
+  scrape_interval: 20s
+  static_configs:
+  - targets: ['b2m-nodejs:3003']
+    labels:
+      service: 'b2m-nodejs'
 
-  - job_name: 'cadvisor'
-    scrape_interval: 20s
-    static_configs:
-         - targets: ['cadvisor:8080']
-
-  - job_name: 'node-exporter'
-    scrape_interval: 20s
-
-    static_configs:
-         - targets: ['node-exporter:9100']
-
-#  - job_name: 'btm-nodejs'
-#    scrape_interval: 20s
-#    static_configs:
-#    - targets: ['192.168.6.191:3001']
-#      labels:
-#        service: 'btm-nodejs'
-#        group: 'production'
-#
-#  - job_name: 'btm-java'
-#    scrape_interval: 20s
-#    static_configs:
-#    - targets: ['192.168.6.191:9080']
-#      labels:
-#        app: 'btm-java'
-#        group: 'production'

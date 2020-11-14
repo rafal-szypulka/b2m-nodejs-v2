@@ -11,7 +11,7 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
-        <link rel="canonical" href="https://rafal-szypulka.github.io/b2m-nodejs-v2/monitoring-instrumentation/">
+        <link rel="canonical" href="https://rafal-szypulka.github.io/b2m-nodejs-v2/monitoring/">
       
       
       
@@ -93,7 +93,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#metrics-instrumentation-the-red-method" tabindex="1" class="md-skip">
+      <a href="#monitoring" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -265,6 +265,8 @@
     
     <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
     
+      
+    
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
         3. Node.js Monitoring
@@ -278,16 +280,11 @@
 <nav class="md-nav md-nav--secondary">
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#metrics-instrumentation-the-red-method" title="Metrics instrumentation - the RED method" class="md-nav__link">
-    Metrics instrumentation - the RED method
-  </a>
-  
-</li>
       
         <li class="md-nav__item">
   <a href="#deploy-the-monitoring-stack-in-docker-compose" title="Deploy the monitoring stack in Docker Compose" class="md-nav__link">
@@ -305,8 +302,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#enable-default-metrics" title="Enable default metrics" class="md-nav__link">
-    Enable default metrics
+  <a href="#expose-default-nodejs-runtime-metrics" title="Expose default Node.js runtime metrics" class="md-nav__link">
+    Expose default Node.js runtime metrics
   </a>
   
 </li>
@@ -344,15 +341,130 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#commit-and-push-changes-to-your-github-repository-and-create-a-pull-request" title="Commit and push changes to your GitHub repository and create a pull request" class="md-nav__link">
-    Commit and push changes to your GitHub repository and create a pull request
+  <a href="#metrics-collection" title="Metrics collection" class="md-nav__link">
+    Metrics collection
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#build-and-test-the-docker-image" title="Build and test the Docker image" class="md-nav__link">
-    Build and test the Docker image
+  <a href="#run-example-promql-queries" title="Run example PromQL queries" class="md-nav__link">
+    Run example PromQL queries
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#throughput" title="Throughput" class="md-nav__link">
+    Throughput
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-rate" title="Error rate" class="md-nav__link">
+    Error rate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-per-minute" title="Request Per Minute" class="md-nav__link">
+    Request Per Minute
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-time" title="Response Time" class="md-nav__link">
+    Response Time
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apdex" title="Apdex" class="md-nav__link">
+    Apdex
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#95th-response-time" title="95th Response Time" class="md-nav__link">
+    95th Response Time
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#median-response-time" title="Median Response Time" class="md-nav__link">
+    Median Response Time
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#average-response-time" title="Average Response Time" class="md-nav__link">
+    Average Response Time
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-usage" title="Memory Usage" class="md-nav__link">
+    Memory Usage
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#average-memory-usage" title="Average Memory Usage" class="md-nav__link">
+    Average Memory Usage
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-prometheus-alert" title="Configure Prometheus alert" class="md-nav__link">
+    Configure Prometheus alert
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#set-the-prometheus-datasource-in-grafana" title="Set the Prometheus datasource in Grafana" class="md-nav__link">
+    Set the Prometheus datasource in Grafana
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-dashboard" title="Configure dashboard" class="md-nav__link">
+    Configure dashboard
   </a>
   
 </li>
@@ -374,8 +486,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../Prometheus-Grafana/" title="4. Prometheus and Grafana configuration" class="md-nav__link">
-      4. Prometheus and Grafana configuration
+    <a href="../OCP/" title="4. App monitoring on Openshift" class="md-nav__link">
+      4. App monitoring on Openshift
     </a>
   </li>
 
@@ -386,20 +498,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../OCP/" title="5. Deploy to RedHat OpenShift 4.2" class="md-nav__link">
-      5. Deploy to RedHat OpenShift 4.2
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="https://ibm-cloud-architecture.github.io/learning-distributed-tracing-101/docs/lab-jaeger-nodejs.html" title="6. Distributed Tracing labs" class="md-nav__link">
-      6. Distributed Tracing labs
+    <a href="https://ibm-cloud-architecture.github.io/learning-distributed-tracing-101/docs/lab-jaeger-nodejs.html" title="5. Distributed Tracing labs" class="md-nav__link">
+      5. Distributed Tracing labs
     </a>
   </li>
 
@@ -430,16 +530,11 @@
 <nav class="md-nav md-nav--secondary">
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#metrics-instrumentation-the-red-method" title="Metrics instrumentation - the RED method" class="md-nav__link">
-    Metrics instrumentation - the RED method
-  </a>
-  
-</li>
       
         <li class="md-nav__item">
   <a href="#deploy-the-monitoring-stack-in-docker-compose" title="Deploy the monitoring stack in Docker Compose" class="md-nav__link">
@@ -457,8 +552,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#enable-default-metrics" title="Enable default metrics" class="md-nav__link">
-    Enable default metrics
+  <a href="#expose-default-nodejs-runtime-metrics" title="Expose default Node.js runtime metrics" class="md-nav__link">
+    Expose default Node.js runtime metrics
   </a>
   
 </li>
@@ -496,15 +591,130 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#commit-and-push-changes-to-your-github-repository-and-create-a-pull-request" title="Commit and push changes to your GitHub repository and create a pull request" class="md-nav__link">
-    Commit and push changes to your GitHub repository and create a pull request
+  <a href="#metrics-collection" title="Metrics collection" class="md-nav__link">
+    Metrics collection
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#build-and-test-the-docker-image" title="Build and test the Docker image" class="md-nav__link">
-    Build and test the Docker image
+  <a href="#run-example-promql-queries" title="Run example PromQL queries" class="md-nav__link">
+    Run example PromQL queries
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#throughput" title="Throughput" class="md-nav__link">
+    Throughput
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-rate" title="Error rate" class="md-nav__link">
+    Error rate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-per-minute" title="Request Per Minute" class="md-nav__link">
+    Request Per Minute
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-time" title="Response Time" class="md-nav__link">
+    Response Time
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apdex" title="Apdex" class="md-nav__link">
+    Apdex
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#95th-response-time" title="95th Response Time" class="md-nav__link">
+    95th Response Time
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#median-response-time" title="Median Response Time" class="md-nav__link">
+    Median Response Time
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#average-response-time" title="Average Response Time" class="md-nav__link">
+    Average Response Time
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-usage" title="Memory Usage" class="md-nav__link">
+    Memory Usage
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#average-memory-usage" title="Average Memory Usage" class="md-nav__link">
+    Average Memory Usage
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-prometheus-alert" title="Configure Prometheus alert" class="md-nav__link">
+    Configure Prometheus alert
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#set-the-prometheus-datasource-in-grafana" title="Set the Prometheus datasource in Grafana" class="md-nav__link">
+    Set the Prometheus datasource in Grafana
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-dashboard" title="Configure dashboard" class="md-nav__link">
+    Configure dashboard
   </a>
   
 </li>
@@ -525,12 +735,10 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/rafal-szypulka/b2m-nodejs-v2/edit/master/docs/monitoring-instrumentation.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/rafal-szypulka/b2m-nodejs-v2/edit/master/docs/monitoring.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                  <h1>3. Node.js Monitoring</h1>
-                
-                <h2 id="metrics-instrumentation-the-red-method">Metrics instrumentation - the RED method<a class="headerlink" href="#metrics-instrumentation-the-red-method" title="Permanent link">&para;</a></h2>
+                <h1 id="monitoring">Monitoring<a class="headerlink" href="#monitoring" title="Permanent link">&para;</a></h1>
 <p>One of the most important decisions to make when setting up web application monitoring is deciding on the type of metrics you need to collect about your app. The metrics you choose simplifies troubleshooting when a problem occurs and also enables you to stay on top of the stability of your services and infrastructure.</p>
 <p>The <a href="https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/">RED method</a> follows on the principles outlined in the <a href="https://landing.google.com/sre/book/chapters/monitoring-distributed-systems.html#xref_monitoring_golden-signals">Four Golden Signals</a>, which focuses on measuring things that end-users care about when using your web services. With the RED method, three key metrics are instrumented that monitor every microservice in your architecture:</p>
 <ul>
@@ -560,13 +768,21 @@ docker-compose up -d
 - <code>b2m-nodejs-v2/lab-3/docker-compose.yaml</code> - this is the main config file for docker-compose stack which specifies all options for all containers in the stack.
 - <code>b2m-nodejs-v2/lab-3/app/server.js</code> - the source code of our sample Node.js application.
 - <code>b2m-nodejs-v2/lab-3/app/Dockerfile</code> - this file is used to build your app docker image.</p>
+<p>3). Verify that you can access the monitoring stack UIs:
+- Prometheus: <code>http://&lt;your-hostname&gt;:9090</code>
+- Grafana: <code>http://&lt;your-hostname&gt;:3000</code> (user/pw: admin/foobar)</p>
+<p>4). Verify that your Node.js app works:</p>
+<div class="codehilite"><pre><span></span>curl http://&lt;your-hostname&gt;:3003
+</pre></div>
+
+
 <h2 id="instrument-application-code-with-nodejs-client-library-for-prometheus">Instrument application code with Node.js client library for Prometheus<a class="headerlink" href="#instrument-application-code-with-nodejs-client-library-for-prometheus" title="Permanent link">&para;</a></h2>
-<p>Go to the directory <code>b2m-nodejs-v2/lab-3/app</code> where the <code>server.js</code> file is located and add the following dependency to the <code>package.json</code>:</p>
+<h3 id="expose-default-nodejs-runtime-metrics">Expose default Node.js runtime metrics<a class="headerlink" href="#expose-default-nodejs-runtime-metrics" title="Permanent link">&para;</a></h3>
+<p>1). Go to the directory <code>b2m-nodejs-v2/lab-3/app</code> where the <code>server.js</code> file is located and add the following dependency to the <code>package.json</code>:</p>
 <div class="codehilite"><pre><span></span>    &quot;prom-client&quot;: &quot;^11.2.1&quot;
 </pre></div>
 
 
-<h3 id="enable-default-metrics">Enable default metrics<a class="headerlink" href="#enable-default-metrics" title="Permanent link">&para;</a></h3>
 <p>There are some default metrics recommended by Prometheus <a href="https://prometheus.io/docs/instrumenting/writing_clientlibs/#standard-and-runtime-collectors">itself</a>.</p>
 <p>To collect these, call <code>collectDefaultMetrics</code></p>
 <blockquote>
@@ -586,8 +802,7 @@ launched every 10 seconds, but this can be modified like this:</p>
 </pre></div>
 
 
-<p><strong>Lab Instructions:</strong></p>
-<p>Edit <code>server.js</code> and <em>uncomment</em> the following lines to enable exposure of default set of Node.js metrics on standard Prometheus route <code>/metrics</code></p>
+<p>2). Edit <code>server.js</code> and <em>uncomment</em> the following lines to enable exposure of default set of Node.js metrics on standard Prometheus route <code>/metrics</code></p>
 <div class="codehilite"><pre><span></span><span class="kr">const</span> <span class="nx">Prometheus</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;prom-client&#39;</span><span class="p">)</span>
 <span class="kr">const</span> <span class="nx">metricsInterval</span> <span class="o">=</span> <span class="nx">Prometheus</span><span class="p">.</span><span class="nx">collectDefaultMetrics</span><span class="p">()</span>
 </pre></div>
@@ -601,14 +816,16 @@ launched every 10 seconds, but this can be modified like this:</p>
 </pre></div>
 
 
-<p>Test the application locally:</p>
-<div class="codehilite"><pre><span></span>cd ~/b2m-nodejs/src
-npm start server.js
+<p>3). Rebuild you app container</p>
+<div class="codehilite"><pre><span></span>cd ~/b2m-nodejs-v2/lab-3
+docker-compose down
+docker-compose build
+docker-compose up -d
 </pre></div>
 
 
-<p>Run a couple of transactions by refreshing the URL: <code>http://localhost:3001/checkout</code></p>
-<p>Use browser or <code>curl</code> to access <code>http://localhost:3001/metrics</code> to verify exposed metrics. Output should be similar to:</p>
+<p>Run a couple of transactions by refreshing the URL: <code>http://&lt;your-hostname&gt;:3003/checkout</code></p>
+<p>Use browser or <code>curl</code> to access <code>http://&lt;your-hostname&gt;:3003/metrics</code> in order to verify exposed metrics. Output should be similar to:</p>
 <div class="codehilite"><pre><span></span># HELP process_cpu_user_seconds_total Total user CPU time spent in seconds.
 # TYPE process_cpu_user_seconds_total counter
 process_cpu_user_seconds_total 0.028084 1546452963611
@@ -686,7 +903,6 @@ nodejs_version_info{version=&quot;v10.7.0&quot;,major=&quot;10&quot;,minor=&quot
 </pre></div>
 
 
-<p>Stop node.js app <code>ctrl-c</code>.</p>
 <h3 id="define-custom-metric">Define custom metric<a class="headerlink" href="#define-custom-metric" title="Permanent link">&para;</a></h3>
 <p>Node.js Prometheus client library allows to define various types of Prometheus metrics like histograms, summaries, gauges and counters. More detailed description of metric types can be found in Prometheus <a href="https://prometheus.io/docs/concepts/metric_types/">documentation</a>.</p>
 <p>In this lab we will define two custom metrics:</p>
@@ -694,7 +910,6 @@ nodejs_version_info{version=&quot;v10.7.0&quot;,major=&quot;10&quot;,minor=&quot
 <li>counter <code>checkouts_total</code> which will store a total number of <code>checkout</code> requests</li>
 <li>histogram <code>http_request_duration_ms</code> which will store percentiles of application requests response time</li>
 </ul>
-<p><strong>Lab Instructions:</strong></p>
 <p>Uncomment the rest of commented lines in <code>server.js</code>. </p>
 <h4 id="checkouts_total">checkouts_total<a class="headerlink" href="#checkouts_total" title="Permanent link">&para;</a></h4>
 <p>Declaration of <code>checkouts_total</code> counter.</p>
@@ -744,14 +959,16 @@ nodejs_version_info{version=&quot;v10.7.0&quot;,major=&quot;10&quot;,minor=&quot
 </pre></div>
 
 
-<p>After you complete code changes, start the local application instance:</p>
-<div class="codehilite"><pre><span></span>cd ~/b2m-nodejs/src
-npm start server.js
+<p>After you complete code changes, rebuild your app container:</p>
+<div class="codehilite"><pre><span></span>cd ~/b2m-nodejs-v2/lab-3
+docker-compose down
+docker-compose build
+docker-compose up -d
 </pre></div>
 
 
-<p>Run a couple of transactions by refreshing the URL: <code>http://localhost:3001/checkout</code></p>
-<p>Use browser to access <code>http://localhost:3001/metrics</code> to verify exposed metrics. Output should be similar to:</p>
+<p>Run a couple of transactions by refreshing the URL: <code>http://&lt;your-hostname&gt;:3003/checkout</code></p>
+<p>Use browser to access <code>http://&lt;your-hostname&gt;:3003/metrics</code> to verify exposed metrics. The output should be similar to:</p>
 <div class="codehilite"><pre><span></span>(...)
 # HELP checkouts_total Total number of checkouts
 # TYPE checkouts_total counter
@@ -801,41 +1018,146 @@ http_request_duration_ms_count{method=&quot;GET&quot;,route=&quot;/checkout&quot
 
 <p>Besides the default set of metrics related to resource utilization by the application process, we can see the additional metrics:</p>
 <ul>
-<li><code>checkouts_total</code> by payment_method</li>
-<li><code>http_request_duration_ms_bucket</code> by percentile buckets and by route</li>
+<li><code>checkouts_total</code></li>
+<li><code>http_request_duration_ms_bucket</code></li>
 </ul>
-<p>Stop the node.js application with <code>ctrl-c</code>.</p>
-<h2 id="commit-and-push-changes-to-your-github-repository-and-create-a-pull-request">Commit and push changes to your GitHub repository and create a pull request<a class="headerlink" href="#commit-and-push-changes-to-your-github-repository-and-create-a-pull-request" title="Permanent link">&para;</a></h2>
-<p>Commit your changes to your GiHub repository:</p>
-<div class="codehilite"><pre><span></span>cd ~/b2m-nodejs
-git commit -am &quot;I added monitoring instrumentation to my app!&quot;
-git push
+<h2 id="metrics-collection">Metrics collection<a class="headerlink" href="#metrics-collection" title="Permanent link">&para;</a></h2>
+<p>Prometheus in this lab has been pre-configured to collect metrics from your Node.js app. Check the <code>b2m-nodejs/lab-3/prometheus/prometheus.yml</code> file for this config:</p>
+<div class="codehilite"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">job_name</span><span class="p">:</span> <span class="s">&#39;b2m-nodejs&#39;</span>
+  <span class="nt">scrape_interval</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20s</span>
+  <span class="nt">static_configs</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">targets</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&#39;b2m-nodejs:3003&#39;</span><span class="p p-Indicator">]</span>
+    <span class="nt">labels</span><span class="p">:</span>
+      <span class="nt">service</span><span class="p">:</span> <span class="s">&#39;b2m-nodejs&#39;</span>
 </pre></div>
 
 
-<p>Logon to your GitHub account via web browser and go to the <code>b2m-nodejs</code> repository. 
-Create a <a href="https://help.github.com/en/articles/about-pull-requests">pull request</a> to submit your changes to the source Github repository. Once a pull request is opened, you can discuss and review the potential changes with collaborators and add follow-up commits before your changes are merged into the base branch.</p>
-<p>Click the <code>New pull request</code> button, quickly review your changes and then click <code>Create pull request</code> button. Write a title and description of your changes and then click <code>Create pull request</code>.</p>
-<p><img alt="" src="../images/pull-request.png" /></p>
-<h2 id="build-and-test-the-docker-image">Build and test the Docker image<a class="headerlink" href="#build-and-test-the-docker-image" title="Permanent link">&para;</a></h2>
-<p>Use provided <code>Dockerfile</code> to rebuild the application container:</p>
-<div class="codehilite"><pre><span></span>cd ~/b2m-nodejs/src
-docker build -t b2m-nodejs .
+<p>Verify that Prometheus server was started via: <a href="http://&lt;your-hostname&gt;:9090/graph">http://<your-hostname>:9090</a>
+Check the status of scraping targets in Prometheus UI -&gt; Status -&gt; Targets </p>
+<h2 id="run-example-promql-queries">Run example PromQL queries<a class="headerlink" href="#run-example-promql-queries" title="Permanent link">&para;</a></h2>
+<p>Generate some application load before running the queries:</p>
+<div class="codehilite"><pre><span></span>for i in {1..10000}; do curl -w &quot;\n&quot; http://localhost:3003/checkout; done
 </pre></div>
 
 
-<p>Make sure the application is not running and you removed the previous application docker container:</p>
-<div class="codehilite"><pre><span></span>docker ps|grep btm-nodejs
+<p>Run the following example PromQL queries using the Prometheus UI.</p>
+<h3 id="throughput">Throughput<a class="headerlink" href="#throughput" title="Permanent link">&para;</a></h3>
+<h4 id="error-rate">Error rate<a class="headerlink" href="#error-rate" title="Permanent link">&para;</a></h4>
+<p>Range[0,1]: number of 5xx requests / total number of requests</p>
+<div class="codehilite"><pre><span></span>sum(increase(http_request_duration_ms_count{code=~&quot;^5..$&quot;}[1m])) /  sum(increase(http_request_duration_ms_count[1m]))
 </pre></div>
 
 
-<p>Start the updated docker container:</p>
-<div class="codehilite"><pre><span></span>docker run --name btm-nodejs -d -p 3001:3001 --log-driver=gelf \
---log-opt gelf-address=udp://localhost:5000 b2m-nodejs
+<p>Expected value <code>~0.2</code> because our application should return 500 for about 20% of transactions.</p>
+<h4 id="request-per-minute">Request Per Minute<a class="headerlink" href="#request-per-minute" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span>sum(rate(http_request_duration_ms_count[1m])) by (service, route, method, code)  * 60
 </pre></div>
 
 
-<p>Verify URLs: <code>http://localhost:3001/checkout</code> and <code>http://localhost:3001/metrics</code> to make sure everything works correctly.</p>
+<p>Check the graph.</p>
+<h3 id="response-time">Response Time<a class="headerlink" href="#response-time" title="Permanent link">&para;</a></h3>
+<h4 id="apdex">Apdex<a class="headerlink" href="#apdex" title="Permanent link">&para;</a></h4>
+<p><a href="https://en.wikipedia.org/wiki/Apdex">Apdex</a> score approximation: <code>100ms</code> target and <code>300ms</code> tolerated response time</p>
+<div class="codehilite"><pre><span></span>(sum(rate(http_request_duration_ms_bucket{le=&quot;100&quot;}[1m])) by (service) + sum(rate(http_request_duration_ms_bucket{le=&quot;300&quot;}[1m])) by (service)
+) / 2 / sum(rate(http_request_duration_ms_count[1m])) by (service)
+</pre></div>
+
+
+<blockquote>
+<p>Note that we divide the sum of both buckets. The reason is that the histogram buckets are cumulative. The le="100" bucket is also contained in the le="300" bucket; dividing it by 2 corrects for that. - <a href="https://prometheus.io/docs/practices/histograms/#apdex-score">Prometheus docs</a></p>
+</blockquote>
+<h4 id="95th-response-time">95th Response Time<a class="headerlink" href="#95th-response-time" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span>histogram_quantile(0.95, sum(rate(http_request_duration_ms_bucket[1m])) by (le, service, route, method))
+</pre></div>
+
+
+<h4 id="median-response-time">Median Response Time<a class="headerlink" href="#median-response-time" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span>histogram_quantile(0.5, sum(rate(http_request_duration_ms_bucket[1m])) by (le, service, route, method))
+</pre></div>
+
+
+<h4 id="average-response-time">Average Response Time<a class="headerlink" href="#average-response-time" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span>avg(rate(http_request_duration_ms_sum[1m]) / rate(http_request_duration_ms_count[1m])) by (service, route, method, code)
+</pre></div>
+
+
+<p><img alt="Prometheus - Data" src="../images/prometheus-data.png" /></p>
+<h3 id="memory-usage">Memory Usage<a class="headerlink" href="#memory-usage" title="Permanent link">&para;</a></h3>
+<h4 id="average-memory-usage">Average Memory Usage<a class="headerlink" href="#average-memory-usage" title="Permanent link">&para;</a></h4>
+<p>In Megabytes.</p>
+<div class="codehilite"><pre><span></span>avg(nodejs_external_memory_bytes / 1024 ) by (service)
+</pre></div>
+
+
+<h2 id="configure-prometheus-alert">Configure Prometheus alert<a class="headerlink" href="#configure-prometheus-alert" title="Permanent link">&para;</a></h2>
+<p>Alerting rules allows to define alert conditions based on Prometheus expression language expressions and to send notifications about firing alerts to an external service. In this lab we will configure one alerting rule for median response time higher than 100ms.</p>
+<p><strong>Lab instruction:</strong></p>
+<p>Add the following alert rule to the <code>alert.rules</code> file. In the lab VM it is located in <code>/root/prometheus/prometheus/alert.rules</code></p>
+<div class="codehilite"><pre><span></span>  - alert: APIHighMedianResponseTime
+    expr: histogram_quantile(0.5, sum by(le, service, route, method) (rate(http_request_duration_ms_bucket[1m])))
+      &gt; 30
+    for: 1m
+    annotations:
+      description: &#39;{{ $labels.service }}, {{ $labels.method }} {{ $labels.route }}
+        has a median response time above 100ms (current value: {{ $value }}ms)&#39;
+      summary: High median response time on {{ $labels.service }} and {{ $labels.method
+        }} {{ $labels.route }}
+</pre></div>
+
+
+<p>Restart the Prometheus stack:</p>
+<div class="codehilite"><pre><span></span>cd ~/prometheus
+docker-compose down
+docker-compose up -d
+</pre></div>
+
+
+<p>Alerts can be listed via Prometheus UI: <a href="http://localhost:9090/alerts">http://localhost:9090/alerts</a></p>
+<p>States of active alerts: </p>
+<ul>
+<li><code>pending</code>:</li>
+</ul>
+<p><img alt="Prometheus - Alert Pending" src="../images/prometheus-alert-pending.png" /></p>
+<ul>
+<li><code>firing</code>:</li>
+</ul>
+<p><img alt="Prometheus - Alert Firing" src="../images/prometheus-alert-firing.png" /></p>
+<h2 id="set-the-prometheus-datasource-in-grafana">Set the Prometheus datasource in Grafana<a class="headerlink" href="#set-the-prometheus-datasource-in-grafana" title="Permanent link">&para;</a></h2>
+<p>Logon to Grafana via <code>http://&lt;your-hostname&gt;:3000</code>
+- user: admin
+- password: foobar</p>
+<p>Verify the prometheus datasource configuration in Grafana. If it was not already configured, <a href="http://docs.grafana.org/features/datasources/prometheus/#adding-the-data-source-to-grafana">create</a> a Grafana datasource with these settings:</p>
+<ul>
+<li>name: Prometheus</li>
+<li>type: prometheus</li>
+<li>url: http://prometheus:9090</li>
+<li>Access: Server</li>
+</ul>
+<h2 id="configure-dashboard">Configure dashboard<a class="headerlink" href="#configure-dashboard" title="Permanent link">&para;</a></h2>
+<p>Grafana Dashboard to <a href="http://docs.grafana.org/reference/export_import/#importing-a-dashboard">import</a>: <code>~/b2m-nodejs-v2/lab-3/btm-nodejs-grafana.json</code></p>
+<p>Monitoring dashboard was created according to the RED Method principles:</p>
+<ul>
+<li>Rate (<code>Thoughput</code> and <code>Checkouts</code> panels)</li>
+<li>Errors (<code>Error rate</code> panel)</li>
+<li>Duration (<code>95th Response Time</code> and <code>Median Response Time</code> panels)</li>
+</ul>
+<p><img alt="Grafana - Throughput" src="../images/grafana.png" /></p>
+<p>Review the configuration of each dashboard panel. Check the <a href="http://docs.grafana.org/reference/annotations/">annotation</a> settings.</p>
+<p>Define the <a href="https://en.wikipedia.org/wiki/Apdex">Apdex</a> score chart using the following query:</p>
+<div class="codehilite"><pre><span></span>(sum(rate(http_request_duration_ms_bucket{le=&quot;100&quot;}[1m])) by (service) + sum(rate(http_request_duration_ms_bucket{le=&quot;300&quot;}[1m])) by (service)
+) / 2 / sum(rate(http_request_duration_ms_count[1m])) by (service)
+</pre></div>
+
+
+<p>You can add it to the existing dashboard:</p>
+<ul>
+<li>Click on the icon <code>Add panel</code> and select <code>Graph</code> panel type. </li>
+<li>Click on the panel title and select edit.</li>
+<li>Select <code>Prometheus</code> datasource in the <code>Metrics</code> tab of the panel query editor</li>
+<li>Copy PromQL to the free form field</li>
+<li>Verify the results on the panel preview</li>
+<li>Explore other Graph panel options</li>
+</ul>
                 
                   
                 
@@ -871,13 +1193,13 @@ docker build -t b2m-nodejs .
           </a>
         
         
-          <a href="../Prometheus-Grafana/" title="4. Prometheus and Grafana configuration" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../OCP/" title="4. App monitoring on Openshift" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                4. Prometheus and Grafana configuration
+                4. App monitoring on Openshift
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

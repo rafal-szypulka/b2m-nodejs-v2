@@ -16,4 +16,4 @@ RUN npm install
 COPY server-complete.js /app
 
 EXPOSE 3001
-CMD [ "npm", "start", "server-complete.js" ]
+CMD [ "npm", "start", "server.js" ]

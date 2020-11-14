@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    btm-metrics: b2m-nodejs
+  name: app-monitor
+  namespace: monitoring
+spec:
+  endpoints:
+    - interval: 30s
+      port: web
+  namespaceSelector:
+    matchNames:
+      - b2m-nodejs
+  selector:
+    matchLabels:
+      name: b2m-nodejs

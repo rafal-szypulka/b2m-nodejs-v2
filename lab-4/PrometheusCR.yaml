@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: app-monitor
+  labels:
+    prometheus: k8s
+  namespace: monitoring
+spec:
+  replicas: 1
+  serviceAccountName: prometheus-k8s
+  securityContext: {}
+  serviceMonitorSelector:
+    matchExpressions:
+      - key: btm-metrics
+        operator: Exists
+  ruleSelector:
+    matchLabels:
+      prometheus: app-monitor
+      role: alert-rules
+  alerting:
+    alertmanagers:
+      - namespace: openshift-monitoring
+        name: alertmanager-main
+        port: web

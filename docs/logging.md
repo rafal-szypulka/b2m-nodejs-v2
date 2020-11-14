@@ -1,12 +1,4 @@
 # Logging
-- [Logging](#logging)
-  - [Lab 1 - Node.js app logging with Elastic stack](#lab-1---nodejs-app-logging-with-elastic-stack)
-    - [Deploy a local Elastic stack with Docker Compose](#deploy-a-local-elastic-stack-with-docker-compose)
-    - [Instrument the Node.js app with logging](#instrument-the-nodejs-app-with-logging)
-  - [Lab 2 - Node.js app logging with Humio](#lab-2---nodejs-app-logging-with-humio)
-    - [Instrument the Node.js app with logging](#instrument-the-nodejs-app-with-logging-1)
-    - [Deploy Humio with Docker Compose](#deploy-humio-with-docker-compose)
-  
 
 A production service should have both logging and monitoring. Monitoring provides a real-time and historical view on the system and application state, and alerts you in case a situation is met. In most cases, a monitoring alert is simply a trigger for you to start an investigation. Monitoring shows the symptoms of problems. Logs provide details and state on individual transactions, so you can fully understand the cause of problems.
 

@@ -1,4 +1,4 @@
-## Metrics instrumentation - the RED method
+# Monitoring
 
 One of the most important decisions to make when setting up web application monitoring is deciding on the type of metrics you need to collect about your app. The metrics you choose simplifies troubleshooting when a problem occurs and also enables you to stay on top of the stability of your services and infrastructure.
 
@@ -34,16 +34,25 @@ docker-compose up -d
 - `b2m-nodejs-v2/lab-3/app/server.js` - the source code of our sample Node.js application.
 - `b2m-nodejs-v2/lab-3/app/Dockerfile` - this file is used to build your app docker image.
 
+3). Verify that you can access the monitoring stack UIs:
+- Prometheus: `http://<your-hostname>:9090`
+- Grafana: `http://<your-hostname>:3000` (user/pw: admin/foobar)
+
+4). Verify that your Node.js app works:
+
+```
+curl http://<your-hostname>:3003
+```
 
 ## Instrument application code with Node.js client library for Prometheus
 
-Go to the directory `b2m-nodejs-v2/lab-3/app` where the `server.js` file is located and add the following dependency to the `package.json`:
+### Expose default Node.js runtime metrics
+1). Go to the directory `b2m-nodejs-v2/lab-3/app` where the `server.js` file is located and add the following dependency to the `package.json`:
 
 ```
     "prom-client": "^11.2.1"
 ```
 
-### Enable default metrics
 There are some default metrics recommended by Prometheus [itself](https://prometheus.io/docs/instrumenting/writing_clientlibs/#standard-and-runtime-collectors).
 
 To collect these, call `collectDefaultMetrics`
@@ -66,9 +75,8 @@ const collectDefaultMetrics = client.collectDefaultMetrics;
 collectDefaultMetrics({ timeout: 5000 });
 ```
 
-**Lab Instructions:**
 
-Edit `server.js` and *uncomment* the following lines to enable exposure of default set of Node.js metrics on standard Prometheus route `/metrics`
+2). Edit `server.js` and *uncomment* the following lines to enable exposure of default set of Node.js metrics on standard Prometheus route `/metrics`
 
 ```js
 const Prometheus = require('prom-client')
@@ -82,15 +90,18 @@ and
    res.end(Prometheus.register.metrics())
  })
 ```
-Test the application locally:
+
+3). Rebuild you app container
 
 ```
-cd ~/b2m-nodejs/src
-npm start server.js
+cd ~/b2m-nodejs-v2/lab-3
+docker-compose down
+docker-compose build
+docker-compose up -d
 ```
-Run a couple of transactions by refreshing the URL: `http://localhost:3001/checkout`
+Run a couple of transactions by refreshing the URL: `http://<your-hostname>:3003/checkout`
 
-Use browser or `curl` to access `http://localhost:3001/metrics` to verify exposed metrics. Output should be similar to:
+Use browser or `curl` to access `http://<your-hostname>:3003/metrics` in order to verify exposed metrics. Output should be similar to:
 
 ```
 # HELP process_cpu_user_seconds_total Total user CPU time spent in seconds.
@@ -169,7 +180,6 @@ nodejs_heap_space_size_available_bytes{space="large_object"} 1506500096 15464529
 nodejs_version_info{version="v10.7.0",major="10",minor="7",patch="0"} 1
 ```
 
-Stop node.js app `ctrl-c`.
 
 ### Define custom metric
 
@@ -180,7 +190,6 @@ In this lab we will define two custom metrics:
 - counter `checkouts_total` which will store a total number of `checkout` requests
 - histogram `http_request_duration_ms` which will store percentiles of application requests response time
 
-**Lab Instructions:**
 
 Uncomment the rest of commented lines in `server.js`. 
 
@@ -237,16 +246,18 @@ app.use((req, res, next) => {
   next()
 })
 ```
-After you complete code changes, start the local application instance:
+After you complete code changes, rebuild your app container:
 
 ```
-cd ~/b2m-nodejs/src
-npm start server.js
+cd ~/b2m-nodejs-v2/lab-3
+docker-compose down
+docker-compose build
+docker-compose up -d
 ```
 
-Run a couple of transactions by refreshing the URL: `http://localhost:3001/checkout`
+Run a couple of transactions by refreshing the URL: `http://<your-hostname>:3003/checkout`
 
-Use browser to access `http://localhost:3001/metrics` to verify exposed metrics. Output should be similar to:
+Use browser to access `http://<your-hostname>:3003/metrics` to verify exposed metrics. The output should be similar to:
 
 ```
 (...)
@@ -297,48 +308,174 @@ http_request_duration_ms_count{method="GET",route="/checkout",code="304"} 12
 
 Besides the default set of metrics related to resource utilization by the application process, we can see the additional metrics:
 
-- `checkouts_total` by payment_method
-- `http_request_duration_ms_bucket` by percentile buckets and by route
+- `checkouts_total`
+- `http_request_duration_ms_bucket`
 
-Stop the node.js application with `ctrl-c`.
+## Metrics collection
+Prometheus in this lab has been pre-configured to collect metrics from your Node.js app. Check the `b2m-nodejs/lab-3/prometheus/prometheus.yml` file for this config:
 
-## Commit and push changes to your GitHub repository and create a pull request 
+```yaml
+- job_name: 'b2m-nodejs'
+  scrape_interval: 20s
+  static_configs:
+  - targets: ['b2m-nodejs:3003']
+    labels:
+      service: 'b2m-nodejs'
+```
+Verify that Prometheus server was started via: [http://<your-hostname>:9090](http://<your-hostname>:9090/graph)
+Check the status of scraping targets in Prometheus UI -> Status -> Targets 
 
-Commit your changes to your GiHub repository:
+## Run example PromQL queries
+
+Generate some application load before running the queries:
 
 ```
-cd ~/b2m-nodejs
-git commit -am "I added monitoring instrumentation to my app!"
-git push
+for i in {1..10000}; do curl -w "\n" http://localhost:3003/checkout; done
 ```
 
-Logon to your GitHub account via web browser and go to the `b2m-nodejs` repository. 
-Create a [pull request](https://help.github.com/en/articles/about-pull-requests) to submit your changes to the source Github repository. Once a pull request is opened, you can discuss and review the potential changes with collaborators and add follow-up commits before your changes are merged into the base branch.
+Run the following example PromQL queries using the Prometheus UI.
 
-Click the `New pull request` button, quickly review your changes and then click `Create pull request` button. Write a title and description of your changes and then click `Create pull request`.
+### Throughput
 
-![](images/pull-request.png)
+#### Error rate
 
-## Build and test the Docker image
-
-Use provided `Dockerfile` to rebuild the application container:
+Range[0,1]: number of 5xx requests / total number of requests
 
 ```
-cd ~/b2m-nodejs/src
-docker build -t b2m-nodejs .
+sum(increase(http_request_duration_ms_count{code=~"^5..$"}[1m])) /  sum(increase(http_request_duration_ms_count[1m]))
 ```
 
-Make sure the application is not running and you removed the previous application docker container:
+Expected value `~0.2` because our application should return 500 for about 20% of transactions.
+
+#### Request Per Minute
 
 ```
-docker ps|grep btm-nodejs
+sum(rate(http_request_duration_ms_count[1m])) by (service, route, method, code)  * 60
+```
+Check the graph.
+
+### Response Time
+
+#### Apdex
+
+[Apdex](https://en.wikipedia.org/wiki/Apdex) score approximation: `100ms` target and `300ms` tolerated response time
+
+```
+(sum(rate(http_request_duration_ms_bucket{le="100"}[1m])) by (service) + sum(rate(http_request_duration_ms_bucket{le="300"}[1m])) by (service)
+) / 2 / sum(rate(http_request_duration_ms_count[1m])) by (service)
 ```
 
-Start the updated docker container:
+> Note that we divide the sum of both buckets. The reason is that the histogram buckets are cumulative. The le="100" bucket is also contained in the le="300" bucket; dividing it by 2 corrects for that. - [Prometheus docs](https://prometheus.io/docs/practices/histograms/#apdex-score)
+
+#### 95th Response Time
 
 ```
-docker run --name btm-nodejs -d -p 3001:3001 --log-driver=gelf \
---log-opt gelf-address=udp://localhost:5000 b2m-nodejs
+histogram_quantile(0.95, sum(rate(http_request_duration_ms_bucket[1m])) by (le, service, route, method))
 ```
 
-Verify URLs: `http://localhost:3001/checkout` and `http://localhost:3001/metrics` to make sure everything works correctly.
+#### Median Response Time
+
+```
+histogram_quantile(0.5, sum(rate(http_request_duration_ms_bucket[1m])) by (le, service, route, method))
+```
+
+#### Average Response Time
+
+```
+avg(rate(http_request_duration_ms_sum[1m]) / rate(http_request_duration_ms_count[1m])) by (service, route, method, code)
+```
+![Prometheus - Data](images/prometheus-data.png)
+
+### Memory Usage
+
+#### Average Memory Usage
+
+In Megabytes.
+
+```
+avg(nodejs_external_memory_bytes / 1024 ) by (service)
+```
+
+## Configure Prometheus alert
+Alerting rules allows to define alert conditions based on Prometheus expression language expressions and to send notifications about firing alerts to an external service. In this lab we will configure one alerting rule for median response time higher than 100ms.
+
+**Lab instruction:**
+
+Add the following alert rule to the `alert.rules` file. In the lab VM it is located in `/root/prometheus/prometheus/alert.rules`
+
+```
+  - alert: APIHighMedianResponseTime
+    expr: histogram_quantile(0.5, sum by(le, service, route, method) (rate(http_request_duration_ms_bucket[1m])))
+      > 30
+    for: 1m
+    annotations:
+      description: '{{ $labels.service }}, {{ $labels.method }} {{ $labels.route }}
+        has a median response time above 100ms (current value: {{ $value }}ms)'
+      summary: High median response time on {{ $labels.service }} and {{ $labels.method
+        }} {{ $labels.route }}
+```
+
+Restart the Prometheus stack:
+
+```
+cd ~/prometheus
+docker-compose down
+docker-compose up -d
+```
+
+Alerts can be listed via Prometheus UI: [http://localhost:9090/alerts](http://localhost:9090/alerts)
+
+States of active alerts: 
+
+- `pending`:
+
+![Prometheus - Alert Pending](images/prometheus-alert-pending.png)
+
+- `firing`:
+
+![Prometheus - Alert Firing](images/prometheus-alert-firing.png)
+
+## Set the Prometheus datasource in Grafana
+
+Logon to Grafana via `http://<your-hostname>:3000`
+- user: admin
+- password: foobar
+
+Verify the prometheus datasource configuration in Grafana. If it was not already configured, [create](http://docs.grafana.org/features/datasources/prometheus/#adding-the-data-source-to-grafana) a Grafana datasource with these settings:
+
++ name: Prometheus
++ type: prometheus
++ url: http://prometheus:9090
++ Access: Server
+
+
+
+## Configure dashboard
+
+Grafana Dashboard to [import](http://docs.grafana.org/reference/export_import/#importing-a-dashboard): `~/b2m-nodejs-v2/lab-3/btm-nodejs-grafana.json`
+
+Monitoring dashboard was created according to the RED Method principles:
+
+- Rate (`Thoughput` and `Checkouts` panels)
+- Errors (`Error rate` panel)
+- Duration (`95th Response Time` and `Median Response Time` panels)
+
+![Grafana - Throughput](images/grafana.png)
+
+Review the configuration of each dashboard panel. Check the [annotation](http://docs.grafana.org/reference/annotations/) settings.
+
+Define the [Apdex](https://en.wikipedia.org/wiki/Apdex) score chart using the following query:
+
+```
+(sum(rate(http_request_duration_ms_bucket{le="100"}[1m])) by (service) + sum(rate(http_request_duration_ms_bucket{le="300"}[1m])) by (service)
+) / 2 / sum(rate(http_request_duration_ms_count[1m])) by (service)
+```
+You can add it to the existing dashboard:
+
+- Click on the icon `Add panel` and select `Graph` panel type. 
+- Click on the panel title and select edit.
+- Select `Prometheus` datasource in the `Metrics` tab of the panel query editor
+- Copy PromQL to the free form field
+- Verify the results on the panel preview
+- Explore other Graph panel options
+   
