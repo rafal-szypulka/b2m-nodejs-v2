@@ -156,10 +156,12 @@ for i in {1..10000}; do curl -w "\n" http://<your-hostname>:3001/checkout; done
 ```
 >If you run the lab locally, you can use the `localhost`
 
-and check out the Kibana (`http://<your-hostname>:5601` `elastic/changeme)`:
+and check out the Kibana (`http://<your-hostname>:5601` `elastic/changeme)`
+
 - The **Discover** view should be similar to:
 
 ![](images/2020-11-11-21-11-06.png)
+
 - From the upper menu select `Open` and select the preconfigured saved search `btm-nodejs`:
 
 ![](images/2020-11-11-21-12-28.png)
