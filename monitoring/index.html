@@ -824,8 +824,8 @@ docker-compose up -d
 </pre></div>
 
 
-<p>Run a couple of transactions by refreshing the URL: <code>http://localhost:3003/checkout</code></p>
-<p>Use browser or <code>curl</code> to access <code>http://localhost:3001/metrics</code> to verify exposed metrics. Output should be similar to:</p>
+<p>Run a couple of transactions by refreshing the URL: <code>http://&lt;your-hostname&gt;:3003/checkout</code></p>
+<p>Use browser or <code>curl</code> to access <code>http://&lt;your-hostname&gt;:3003/metrics</code> in order to verify exposed metrics. Output should be similar to:</p>
 <div class="codehilite"><pre><span></span># HELP process_cpu_user_seconds_total Total user CPU time spent in seconds.
 # TYPE process_cpu_user_seconds_total counter
 process_cpu_user_seconds_total 0.028084 1546452963611
@@ -959,7 +959,7 @@ nodejs_version_info{version=&quot;v10.7.0&quot;,major=&quot;10&quot;,minor=&quot
 </pre></div>
 
 
-<p>After you complete code changes, rebuild you app container:</p>
+<p>After you complete code changes, rebuild your app container:</p>
 <div class="codehilite"><pre><span></span>cd ~/b2m-nodejs-v2/lab-3
 docker-compose down
 docker-compose build
@@ -1032,7 +1032,7 @@ http_request_duration_ms_count{method=&quot;GET&quot;,route=&quot;/checkout&quot
 </pre></div>
 
 
-<p>Verify that Prometheus server was started via: <a href="http://localhost:9090/graph">http://localhost:9090</a>
+<p>Verify that Prometheus server was started via: <a href="http://&lt;your-hostname&gt;:9090/graph">http://<your-hostname>:9090</a>
 Check the status of scraping targets in Prometheus UI -&gt; Status -&gt; Targets </p>
 <h2 id="run-example-promql-queries">Run example PromQL queries<a class="headerlink" href="#run-example-promql-queries" title="Permanent link">&para;</a></h2>
 <p>Generate some application load before running the queries:</p>
@@ -1131,6 +1131,7 @@ docker-compose up -d
 <li>name: Prometheus</li>
 <li>type: prometheus</li>
 <li>url: http://prometheus:9090</li>
+<li>Access: Server</li>
 </ul>
 <h2 id="configure-dashboard">Configure dashboard<a class="headerlink" href="#configure-dashboard" title="Permanent link">&para;</a></h2>
 <p>Grafana Dashboard to <a href="http://docs.grafana.org/reference/export_import/#importing-a-dashboard">import</a>: <code>~/b2m-nodejs-v2/lab-3/btm-nodejs-grafana.json</code></p>
