@@ -466,7 +466,7 @@
                 
                 <h2 id="how-to-monitor-applications-on-openshift-4x-with-prometheus-operator">How to monitor applications on OpenShift 4.x with Prometheus Operator<a class="headerlink" href="#how-to-monitor-applications-on-openshift-4x-with-prometheus-operator" title="Permanent link">&para;</a></h2>
 <p>OpenShift Container Platform includes a pre-configured, pre-installed, and self-updating monitoring stack that is based on the Prometheus open source project and its wider eco-system. It provides monitoring of cluster components and includes a set of alerts to immediately notify the cluster administrator about any occurring problems and a set of Grafana dashboards. The cluster monitoring stack is only supported for monitoring OpenShift Container Platform clusters and adding additional monitoring targets is not supported.</p>
-<p>In this article I will describe how to configure application monitoring stack on Openshift 4.2/4.3 using Prometheus Operator for a sample Node.js microservice instrumented with Prometheus client library.</p>
+<p>In this lab we will configure application monitoring stack on Openshift 4.x using Prometheus Operator for a sample Node.js microservice instrumented with Prometheus client library (instrumentation was covered in Lab-3).</p>
 <h3 id="deploy-an-instrumented-application">Deploy an instrumented application<a class="headerlink" href="#deploy-an-instrumented-application" title="Permanent link">&para;</a></h3>
 <p>Use the following command and provided yaml file, to deploy sample Node.js microservice instrumented with Prometheus client library. </p>
 <div class="codehilite"><pre><span></span>oc new-project b2m-nodejs
@@ -474,7 +474,6 @@ oc create -f b2m-nodejs.yml
 </pre></div>
 
 
-<p>-&gt;<a href="https://rafal-szypulka.github.io/b2m-nodejs">Here</a>&lt;- you can read about how this application has been instrumented.</p>
 <p>Create route to expose this application externally:</p>
 <div class="codehilite"><pre><span></span>oc expose svc b2m-nodejs
 </pre></div>
@@ -658,14 +657,13 @@ Now you should see it in <code>Operators -&gt; Installed Operators</code>.</li>
 
 <p>Access the Grafana console URL and logon to Grafana.
 Verify the Prometheus datasource has been created and can connect to app monitoring Prometheus.</p>
-<p>Create sample monitoring dashboard and copy dashboard JSON definition or use the one provided in this repository: <a href="app-monitoring-dashboard.json">app-monitoring-dashboard.json</a>.</p>
 <ol>
-<li>Return to the Grafana Operator details in OpenShift console, select <code>Grafana Dashboard</code> and click <code>Create Grafana Dashboard</code> button. Rename the <code>metadata.name:</code> to something meaningful.</li>
-</ol>
-<p><img alt="" src="../images/2019-11-19-14-49-10.png" /></p>
-<p>and copy dashboard JSON definition to <code>spec.json</code>. You can also use provided example Grafana Dashboard yaml provided with this repo: <code>grafanadashboard-app-monitoring-dashboard.json</code>.</p>
-<ol>
-<li>Verify that Grafana dashboard has been provisioned:</li>
+<li>
+<p>Import provided grafana dashboard: <code>b2m-nodejs-v2/lab-4/app-monitoring-dashboard.json</code>.</p>
+</li>
+<li>
+<p>Verify that Grafana dashboard has been provisioned:</p>
+</li>
 </ol>
 <p><img alt="" src="../images/2019-11-19-15-02-49.png" /></p>
 <h3 id="deploy-alertmanager">Deploy Alertmanager<a class="headerlink" href="#deploy-alertmanager" title="Permanent link">&para;</a></h3>
