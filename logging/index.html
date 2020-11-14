@@ -535,6 +535,9 @@ docker-compose up -d
 - <code>b2m-nodejs-v2/lab-1/app/Dockerfile</code> - this file is used to build your app docker image.</p>
 <p>3). After the <code>docker-compose</code> completed the startup, verify you can access Kibana on <code>http://&lt;your-hostname&gt;:5601</code>.</p>
 <p>Logon using user: <code>elastic</code>, password: <code>changeme</code></p>
+<blockquote>
+<p>If you run the lab locally, you can use the <code>localhost</code></p>
+</blockquote>
 <p>4). <a href="https://www.elastic.co/guide/en/kibana/6.8/managing-saved-objects.html">Import</a> the index pattern, saved search, visualizations and dashboard from the provided <code>kibana.json</code> file. We will use them in the next part of the lab:
 - Go to Management -&gt; Kibana/Saved Objects -&gt; Import and select the <code>b2m-nodejs-v2/lab-1/kibana.json</code> file.</p>
 <p>You should see the following Saved Objects imported:</p>
@@ -597,7 +600,7 @@ Timestamp should include the time zone information and be precise down to millis
 </pre></div>
 
 
-<p>3). Rebuild the Node.js app contaner:</p>
+<p>3). Rebuild the Node.js app container:</p>
 <div class="codehilite"><pre><span></span>cd b2m-nodejs-v2/lab-1
 docker-compose down
 docker-compose build
@@ -605,12 +608,15 @@ docker-compose up -d
 </pre></div>
 
 
-<p>4). Simulate a couple of transactions using your web browser or <code>curl</code> by accessing <code>http://localhost:3001/checkout</code>:</p>
-<div class="codehilite"><pre><span></span>for i in {1..10000}; do curl -w &quot;\n&quot; http://localhost:3001/checkout; done
+<p>4). Simulate a couple of transactions using your web browser or <code>curl</code> by accessing <code>http://&lt;your-hostname&gt;:3001/checkout</code>:</p>
+<div class="codehilite"><pre><span></span>for i in {1..10000}; do curl -w &quot;\n&quot; http://&lt;your-hostname&gt;:3001/checkout; done
 </pre></div>
 
 
-<p>and check out the Kibana (http://localhost:5601 elastic/changeme):
+<blockquote>
+<p>If you run the lab locally, you can use the <code>localhost</code></p>
+</blockquote>
+<p>and check out the Kibana (<code>http://&lt;your-hostname&gt;:5601</code> <code>elastic/changeme)</code>:
 - The <strong>Discover</strong> view should be similar to:</p>
 <p><img alt="" src="../images/2020-11-11-21-11-06.png" />
 - From the upper menu select <code>Open</code> and select the preconfigured saved search <code>btm-nodejs</code>:</p>
@@ -655,7 +661,7 @@ Ignore the error: <code>"No such service: b2m-nodejs"</code>, we will add it lat
 <li><code>b2m-nodejs-v2/lab-2/app/server.js</code> - the source code of our sample Node.js application instrumented with logging.</li>
 <li><code>b2m-nodejs-v2/lab-2/app/Dockerfile</code> - this file is used to build your app docker image.</li>
 </ul>
-<p>2). Access the Humio UI using internet browser on http://\<your-hostname>:8080
+<p>2). Access the Humio UI using internet browser on <code>http://&lt;your-hostname&gt;:8080</code> (If you run the lab locally, you can use the <code>localhost</code>)
 3). Click <code>Add item</code> and create <code>b2m-nodejs</code> repository.
 4). Inside new repository,  go to <code>Settings -&gt; API Tokens</code>. Copy the default token.</p>
 <p><img alt="" src="../images/2020-11-13-13-45-14.png" /></p>
@@ -673,7 +679,7 @@ docker-compose down
 </pre></div>
 
 
-<p>10). Access the Humio UI using internet browser on http://localhost:8080</p>
+<p>10). Access the Humio UI using internet browser on <code>http://&lt;your-hostname&gt;:8080</code> (If you run the lab locally, you can use the <code>localhost</code>).</p>
 <p>11). Go to <code>b2m-nodejs</code> repository and select <code>Parsers</code>. Click on <code>+ New Parser</code>. Name it <code>b2m-json</code>.</p>
 <p>12). Replace the default content on the left side with the following parser script:</p>
 <div class="codehilite"><pre><span></span>parseJson()|parseJson(line)
@@ -693,11 +699,14 @@ Docker wraps the application log (which the app emits as JSON) in its own JSON e
 </blockquote>
 <p>13). Go to <code>Settings-&gt;API</code> tokens and select your newly defined parser in the <code>Assigned Parser</code> option of the <code>default</code> API token.</p>
 <p><img alt="" src="../images/2020-11-13-13-40-43.png" /></p>
-<p>14). Simulate a couple of transactions using your web browser or <code>curl</code> by accessing http://localhost:3002/checkout:</p>
+<p>14). Simulate a couple of transactions using your web browser or <code>curl</code> by accessing <code>http://&lt;your-hostname&gt;:3002/checkout</code>:</p>
 <div class="codehilite"><pre><span></span>for i in {1..10000}; do curl -w &quot;\n&quot; http://localhost:3002/checkout; done
 </pre></div>
 
 
+<blockquote>
+<p>If you run the lab locally, you can use the <code>localhost</code></p>
+</blockquote>
 <p>Verify results in the <code>Search</code> view.</p>
 <p>15). Import the Humio dashboard provided with this lab <code>humio-dashboard.yaml</code>:
 - Go to <code>Dashboards</code>, click <code>+ New Dashboard</code>
