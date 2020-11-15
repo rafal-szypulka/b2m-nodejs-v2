@@ -17,7 +17,7 @@ var health = true;
 var msg;
 
 const app = express()
-const port = process.env.PORT || 3001
+const port = process.env.PORT || 3002
 
 app.get('/', (req, res, next) => {
   res.redirect('/checkout')
