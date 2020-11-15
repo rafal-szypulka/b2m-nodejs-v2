@@ -14,7 +14,7 @@ services:
     ports:
       - "8080:8080"
       - "8081:8081"
-      - "9200:9200"
+      - "9201:9201"
     env_file:
       - ./humio/etc/humio/humio.conf
     ulimits:
