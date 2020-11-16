@@ -65,7 +65,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - /opt/grafana_data:/var/lib/grafana:rw
+      - grafana_data:/var/lib/grafana:rw
       - ./grafana/provisioning/:/etc/grafana/provisioning/
     env_file:
       - ./grafana/config.monitoring
