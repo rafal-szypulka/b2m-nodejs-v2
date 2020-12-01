@@ -646,7 +646,16 @@ Free-text search lets you search anything, in any field, without relying on pre-
 Humio uses high data compression so you can cut hardware costs and store more data. High compression also makes it cost-effective to retain more data for longer, enabling both more detailed analysis and traceability over longer time periods.</p>
 <p>More on https://www.humio.com/log-management#features</p>
 <h3 id="instrument-the-nodejs-app-with-logging_1">Instrument the Node.js app with logging<a class="headerlink" href="#instrument-the-nodejs-app-with-logging_1" title="Permanent link">&para;</a></h3>
-<p>If you did the app instrumentation part of the Lab 1, you don't have to do anything - we will use exactly the same instrumentation, just copy and replace the <code>b2m-nodejs-v2/lab-1/app/server.js</code> to <code>b2m-nodejs-v2/lab-2/app/server.js</code>.</p>
+<p>If you did the app instrumentation part of the Lab 1, just copy and replace the <code>b2m-nodejs-v2/lab-1/app/server.js</code> to <code>b2m-nodejs-v2/lab-2/app/server.js</code> and change the line:</p>
+<div class="codehilite"><pre><span></span>const port = process.env.PORT || 3001
+</pre></div>
+
+
+<p>to</p>
+<div class="codehilite"><pre><span></span>const port = process.env.PORT || 3002
+</pre></div>
+
+
 <p>If you start with Lab 2, do the instrumentation steps with <code>winston</code> logging library as described in chapter <a href="#instrument-the-nodejs-app-with-logging">Instrument the Node.js app with logging</a>.</p>
 <h3 id="deploy-humio-with-docker-compose">Deploy Humio with Docker Compose<a class="headerlink" href="#deploy-humio-with-docker-compose" title="Permanent link">&para;</a></h3>
 <p>1). Start Humio with our Node.js app in docker-compose:</p>
