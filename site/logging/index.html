@@ -646,7 +646,16 @@ Free-text search lets you search anything, in any field, without relying on pre-
 Humio uses high data compression so you can cut hardware costs and store more data. High compression also makes it cost-effective to retain more data for longer, enabling both more detailed analysis and traceability over longer time periods.</p>
 <p>More on https://www.humio.com/log-management#features</p>
 <h3 id="instrument-the-nodejs-app-with-logging_1">Instrument the Node.js app with logging<a class="headerlink" href="#instrument-the-nodejs-app-with-logging_1" title="Permanent link">&para;</a></h3>
-<p>If you did the app instrumentation part of the Lab 1, you don't have to do anything - we will use exactly the same instrumentation, just copy and replace the <code>b2m-nodejs-v2/lab-1/app/server.js</code> to <code>b2m-nodejs-v2/lab-2/app/server.js</code>.</p>
+<p>If you did the app instrumentation part of the Lab 1, just copy and replace the <code>b2m-nodejs-v2/lab-1/app/server.js</code> to <code>b2m-nodejs-v2/lab-2/app/server.js</code> and change the line:</p>
+<div class="codehilite"><pre><span></span>const port = process.env.PORT || 3001
+</pre></div>
+
+
+<p>to</p>
+<div class="codehilite"><pre><span></span>const port = process.env.PORT || 3002
+</pre></div>
+
+
 <p>If you start with Lab 2, do the instrumentation steps with <code>winston</code> logging library as described in chapter <a href="#instrument-the-nodejs-app-with-logging">Instrument the Node.js app with logging</a>.</p>
 <h3 id="deploy-humio-with-docker-compose">Deploy Humio with Docker Compose<a class="headerlink" href="#deploy-humio-with-docker-compose" title="Permanent link">&para;</a></h3>
 <p>1). Start Humio with our Node.js app in docker-compose:</p>
@@ -665,9 +674,9 @@ Ignore the error: <code>"No such service: b2m-nodejs"</code>, we will add it lat
 <li><code>b2m-nodejs-v2/lab-2/app/server.js</code> - the source code of our sample Node.js application instrumented with logging.</li>
 <li><code>b2m-nodejs-v2/lab-2/app/Dockerfile</code> - this file is used to build your app docker image.</li>
 </ul>
-<p>2). Access the Humio UI using internet browser on <code>http://&lt;your-hostname&gt;:8080</code> (If you run the lab locally, you can use the <code>localhost</code>)
-3). Click <code>Add item</code> and create <code>b2m-nodejs</code> repository.
-4). Inside new repository,  go to <code>Settings -&gt; API Tokens</code>. Copy the default token.</p>
+<p>2). Access the Humio UI using internet browser on <code>http://&lt;your-hostname&gt;:8080</code> (If you run the lab locally, you can use the <code>localhost</code>)</p>
+<p>3). Click <code>Add item</code> and create <code>b2m-nodejs</code> repository.</p>
+<p>4). Inside new repository,  go to <code>Settings -&gt; API Tokens</code>. Copy the default token.</p>
 <p><img alt="" src="../images/2020-11-13-13-45-14.png" /></p>
 <p>5). Stop the Humio stack:</p>
 <div class="codehilite"><pre><span></span>cd b2m-nodejs-v2/lab-2
@@ -675,17 +684,17 @@ docker-compose down
 </pre></div>
 
 
-<p>7). Edit the <code>b2m-nodejs-v2/lab-2/docker-compose.yaml</code> and paste the token as value of <code>splunk-token</code> (remember to put the token in quotes).
-8). Uncomment the whole <code>b2m-nodejs</code> section (together with all its options). Make sure the YAML indentation is correct (tip: remove <code>#</code> character together with one space character).</p>
-<p>9). Start the Humio and Node.js stack:</p>
+<p>6). Edit the <code>b2m-nodejs-v2/lab-2/docker-compose.yaml</code> and paste the token as value of <code>splunk-token</code> (remember to put the token in quotes).</p>
+<p>7). Uncomment the whole <code>b2m-nodejs</code> section (together with all its options). Make sure the YAML indentation is correct (tip: remove <code>#</code> character together with one space character).</p>
+<p>8). Start the Humio and Node.js stack:</p>
 <div class="codehilite"><pre><span></span>cd b2m-nodejs-v2/lab-2
 ./start-lab2.sh
 </pre></div>
 
 
-<p>10). Access the Humio UI using internet browser on <code>http://&lt;your-hostname&gt;:8080</code> (If you run the lab locally, you can use the <code>localhost</code>).</p>
-<p>11). Go to <code>b2m-nodejs</code> repository and select <code>Parsers</code>. Click on <code>+ New Parser</code>. Name it <code>b2m-json</code>.</p>
-<p>12). Replace the default content on the left side with the following parser script:</p>
+<p>9). Access the Humio UI using internet browser on <code>http://&lt;your-hostname&gt;:8080</code> (If you run the lab locally, you can use the <code>localhost</code>).</p>
+<p>10). Go to <code>b2m-nodejs</code> repository and select <code>Parsers</code>. Click on <code>+ New Parser</code>. Name it <code>b2m-json</code>.</p>
+<p>11). Replace the default content on the left side with the following parser script:</p>
 <div class="codehilite"><pre><span></span>parseJson()|parseJson(line)
 </pre></div>
 
@@ -701,9 +710,9 @@ docker-compose down
 <p>Why we parse JSON twice? 
 Docker wraps the application log (which the app emits as JSON) in its own JSON envelope, so first we parse docker JSON and then parse JSON contents of already extracted field <code>line</code>. Note the <code>|</code> character (which works exactly the same way as in Linux or Unix shell!).</p>
 </blockquote>
-<p>13). Go to <code>Settings-&gt;API</code> tokens and select your newly defined parser in the <code>Assigned Parser</code> option of the <code>default</code> API token.</p>
+<p>12). Go to <code>Settings-&gt;API</code> tokens and select your newly defined parser in the <code>Assigned Parser</code> option of the <code>default</code> API token.</p>
 <p><img alt="" src="../images/2020-11-13-13-40-43.png" /></p>
-<p>14). Simulate a couple of transactions using your web browser or <code>curl</code> by accessing <code>http://&lt;your-hostname&gt;:3002/checkout</code>:</p>
+<p>13). Simulate a couple of transactions using your web browser or <code>curl</code> by accessing <code>http://&lt;your-hostname&gt;:3002/checkout</code>:</p>
 <div class="codehilite"><pre><span></span>for i in {1..10000}; do curl -w &quot;\n&quot; http://localhost:3002/checkout; done
 </pre></div>
 
@@ -712,18 +721,18 @@ Docker wraps the application log (which the app emits as JSON) in its own JSON e
 <p>If you run the lab locally, you can use the <code>localhost</code></p>
 </blockquote>
 <p>Verify results in the <code>Search</code> view.</p>
-<p>15). Import the Humio dashboard provided with this lab <code>humio-dashboard.yaml</code>:
+<p>14). Import the Humio dashboard provided with this lab <code>humio-dashboard.yaml</code>:
 - Go to <code>Dashboards</code>, click <code>+ New Dashboard</code>
 - Name your dashboard <code>B2M Node.js</code> and select <code>Template file</code> option. 
 - Click <code>Upload Template</code> and select <code>b2m-nodejs-v2/lab-2/humio-dashboard.yaml</code>
 - Click <code>Create Dashboard</code></p>
-<p>16). Access <code>B2M Node.js</code> dashboard. Generate more application requests with:</p>
+<p>15). Access <code>B2M Node.js</code> dashboard. Generate more application requests with:</p>
 <div class="codehilite"><pre><span></span>for i in {1..10000}; do curl -w &quot;\n&quot; http://localhost:3002/checkout; done
 </pre></div>
 
 
 <p><img alt="" src="../images/2020-11-13-13-31-36.png" /></p>
-<p>17). Click the <code>Edit</code> button and then <code>Show Queries</code>. You will see the Humio queries used to produce data for every chart.</p>
+<p>16). Click the <code>Edit</code> button and then <code>Show Queries</code>. You will see the Humio queries used to produce data for every chart.</p>
 <p><img alt="" src="../images/2020-11-13-13-35-21.png" /></p>
 <blockquote>
 <p><strong>Stop the docker-compose stack before starting the next exercise:</strong></p>

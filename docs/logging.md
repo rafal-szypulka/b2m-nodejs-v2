@@ -192,7 +192,15 @@ More on https://www.humio.com/log-management#features
 
 ### Instrument the Node.js app with logging
 
-If you did the app instrumentation part of the Lab 1, you don't have to do anything - we will use exactly the same instrumentation, just copy and replace the `b2m-nodejs-v2/lab-1/app/server.js` to `b2m-nodejs-v2/lab-2/app/server.js`.
+If you did the app instrumentation part of the Lab 1, just copy and replace the `b2m-nodejs-v2/lab-1/app/server.js` to `b2m-nodejs-v2/lab-2/app/server.js` and change the line:
+
+```
+const port = process.env.PORT || 3001
+```
+to
+```
+const port = process.env.PORT || 3002
+```
 
 If you start with Lab 2, do the instrumentation steps with `winston` logging library as described in chapter [Instrument the Node.js app with logging](#instrument-the-nodejs-app-with-logging).
 
@@ -215,7 +223,9 @@ While waiting for containers, review the configuration of our logging lab.
 - `b2m-nodejs-v2/lab-2/app/Dockerfile` - this file is used to build your app docker image.
 
 2). Access the Humio UI using internet browser on `http://<your-hostname>:8080` (If you run the lab locally, you can use the `localhost`)
+
 3). Click `Add item` and create `b2m-nodejs` repository.
+
 4). Inside new repository,  go to `Settings -> API Tokens`. Copy the default token.
 
 ![](images/2020-11-13-13-45-14.png)
@@ -226,20 +236,22 @@ cd b2m-nodejs-v2/lab-2
 docker-compose down
 ```
 
-7). Edit the `b2m-nodejs-v2/lab-2/docker-compose.yaml` and paste the token as value of `splunk-token` (remember to put the token in quotes).
-8). Uncomment the whole `b2m-nodejs` section (together with all its options). Make sure the YAML indentation is correct (tip: remove `#` character together with one space character).
+6). Edit the `b2m-nodejs-v2/lab-2/docker-compose.yaml` and paste the token as value of `splunk-token` (remember to put the token in quotes).
 
-9). Start the Humio and Node.js stack:
+7). Uncomment the whole `b2m-nodejs` section (together with all its options). Make sure the YAML indentation is correct (tip: remove `#` character together with one space character).
+
+8). Start the Humio and Node.js stack:
 
 ```
 cd b2m-nodejs-v2/lab-2
 ./start-lab2.sh
 ```
-10). Access the Humio UI using internet browser on `http://<your-hostname>:8080` (If you run the lab locally, you can use the `localhost`).
 
-11). Go to `b2m-nodejs` repository and select `Parsers`. Click on `+ New Parser`. Name it `b2m-json`.
+9). Access the Humio UI using internet browser on `http://<your-hostname>:8080` (If you run the lab locally, you can use the `localhost`).
 
-12). Replace the default content on the left side with the following parser script:
+10). Go to `b2m-nodejs` repository and select `Parsers`. Click on `+ New Parser`. Name it `b2m-json`.
+
+11). Replace the default content on the left side with the following parser script:
 
 ```
 parseJson()|parseJson(line)
@@ -257,11 +269,11 @@ and verify extracted fields. Save your new Parser.
 >Why we parse JSON twice? 
 Docker wraps the application log (which the app emits as JSON) in its own JSON envelope, so first we parse docker JSON and then parse JSON contents of already extracted field `line`. Note the `|` character (which works exactly the same way as in Linux or Unix shell!).
 
-13). Go to `Settings->API` tokens and select your newly defined parser in the `Assigned Parser` option of the `default` API token.
+12). Go to `Settings->API` tokens and select your newly defined parser in the `Assigned Parser` option of the `default` API token.
 
 ![](images/2020-11-13-13-40-43.png)
 
-14). Simulate a couple of transactions using your web browser or `curl` by accessing `http://<your-hostname>:3002/checkout`:
+13). Simulate a couple of transactions using your web browser or `curl` by accessing `http://<your-hostname>:3002/checkout`:
 
 ```
 for i in {1..10000}; do curl -w "\n" http://localhost:3002/checkout; done
@@ -271,20 +283,20 @@ for i in {1..10000}; do curl -w "\n" http://localhost:3002/checkout; done
 
 Verify results in the `Search` view.
 
-15). Import the Humio dashboard provided with this lab `humio-dashboard.yaml`:
+14). Import the Humio dashboard provided with this lab `humio-dashboard.yaml`:
 - Go to `Dashboards`, click `+ New Dashboard`
 - Name your dashboard `B2M Node.js` and select `Template file` option. 
 - Click `Upload Template` and select `b2m-nodejs-v2/lab-2/humio-dashboard.yaml`
 - Click `Create Dashboard`
 
-16). Access `B2M Node.js` dashboard. Generate more application requests with:
+15). Access `B2M Node.js` dashboard. Generate more application requests with:
 
 ```
 for i in {1..10000}; do curl -w "\n" http://localhost:3002/checkout; done
 ```
 ![](images/2020-11-13-13-31-36.png)
 
-17). Click the `Edit` button and then `Show Queries`. You will see the Humio queries used to produce data for every chart.
+16). Click the `Edit` button and then `Show Queries`. You will see the Humio queries used to produce data for every chart.
 
 ![](images/2020-11-13-13-35-21.png)
 
