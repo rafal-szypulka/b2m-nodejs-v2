@@ -95,10 +95,7 @@ spec:
       prometheus: app-monitor
       role: alert-rules
   alerting:
-    alertmanagers:
-      - namespace: openshift-monitoring
-        name: alertmanager-main
-        port: web
+    alertmanagers: {}
 ```
 
 Click `Create` button.
