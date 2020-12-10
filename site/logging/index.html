@@ -519,6 +519,10 @@ output {
 
 
 <p>The above will configure Logstash input to use <code>gelf</code> (Graylog Extended Log Format) protocol supported by Docker log driver, so we can directly stream application logs from the app running in Docker container to Logstash using <code>gelf</code> protocol. JSON formatted app log message is extracted from the field <code>message</code> and parsed to named fields. After parsing and conversion the log steam is sent to elasticsearch.</p>
+<p>1). Before you can build the application you must log into the docker hub registry. (If you do not have a login already go to dockerhub and create one):</p>
+<div class="codehilite"><pre><span></span>docker login https://index.docker.io -u USERNAME
+</pre></div>
+
 <p>1). Start the Elastic stack:</p>
 <div class="codehilite"><pre><span></span>cd b2m-nodejs-v2/lab-1
 docker-compose build

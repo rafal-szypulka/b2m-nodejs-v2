@@ -470,11 +470,19 @@
 <h3 id="deploy-an-instrumented-application">Deploy an instrumented application<a class="headerlink" href="#deploy-an-instrumented-application" title="Permanent link">&para;</a></h3>
 <p>Use the following command and provided yaml file, to deploy sample Node.js microservice instrumented with Prometheus client library. </p>
 <div class="codehilite"><pre><span></span>oc new-project b2m-nodejs
-oc create -f b2m-nodejs.yml
+oc new-app https://github.com/rafal-szypulka/b2m-nodejs-v2 --context-dir=lab-4/app --name b2m-nodejs --labels='name=b2m-nodejs' --insecure-registry=true</pre></div>
+
+<p>The monitor expects the service's port name to be <B>web</B> so edit the service and change  spec -> ports -> name to web:</p>
+<div class="codehilite"><pre><span></span>oc edit svc b2m-nodejs
+
+  spec:
+    clusterIP: xxx.xxx.xxx.xxx
+    ports:
+      - name: web
+
 </pre></div>
 
-
-<p>Create route to expose this application externally:</p>
+<p>Create a route to expose this application externally:</p>
 <div class="codehilite"><pre><span></span>oc expose svc b2m-nodejs
 </pre></div>
 
