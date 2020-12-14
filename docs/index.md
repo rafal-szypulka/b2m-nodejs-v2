@@ -31,3 +31,6 @@ git clone https://github.com/rafal-szypulka/b2m-nodejs-v2
 Most of the commands should be executed from the `b2m-nodejs-v2/lab-x` directory:
 
 > The solution to the lab is located in the directory b2m-nodejs-v2/lab-x/solution
+
+> [Login to Docker Hub](https://hub.docker.com/signup) using `docker login` in order to avoid the problems with [recently introduced limits](https://www.openshift.com/blog/mitigate-impact-of-docker-hub-pull-request-limits).
+> 
