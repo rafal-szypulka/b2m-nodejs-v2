@@ -470,19 +470,11 @@
 <h3 id="deploy-an-instrumented-application">Deploy an instrumented application<a class="headerlink" href="#deploy-an-instrumented-application" title="Permanent link">&para;</a></h3>
 <p>Use the following command and provided yaml file, to deploy sample Node.js microservice instrumented with Prometheus client library. </p>
 <div class="codehilite"><pre><span></span>oc new-project b2m-nodejs
-oc new-app https://github.com/rafal-szypulka/b2m-nodejs-v2 --context-dir=lab-4/app --name b2m-nodejs --labels='name=b2m-nodejs' --insecure-registry=true</pre></div>
-
-<p>The monitor expects the service's port name to be <B>web</B> so edit the service and change  spec -> ports -> name to web:</p>
-<div class="codehilite"><pre><span></span>oc edit svc b2m-nodejs
-
-  spec:
-    clusterIP: xxx.xxx.xxx.xxx
-    ports:
-      - name: web
-
+oc create -f b2m-nodejs.yml
 </pre></div>
 
-<p>Create a route to expose this application externally:</p>
+
+<p>Create route to expose this application externally:</p>
 <div class="codehilite"><pre><span></span>oc expose svc b2m-nodejs
 </pre></div>
 
@@ -563,7 +555,10 @@ process_cpu_seconds_total <span class="m">0</span>.3038910000000002 <span class=
       <span class="nt">prometheus</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-monitor</span>
       <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">alert-rules</span>
   <span class="nt">alerting</span><span class="p">:</span>
-    <span class="nt">alertmanagers</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+    <span class="nt">alertmanagers</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">openshift-monitoring</span>
+        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">alertmanager-main</span>
+        <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">web</span>
 </pre></div>
 
 
