@@ -474,6 +474,21 @@ oc create -f b2m-nodejs.yml
 </pre></div>
 
 
+<p>In case of <a href="https://www.openshift.com/blog/mitigate-impact-of-docker-hub-pull-request-limits">problems with pulling the app image from Docker Hub</a>, you can build the application image by yourself using:</p>
+<div class="codehilite"><pre><span></span>oc new-app https://github.com/rafal-szypulka/b2m-nodejs-v2 <span class="se">\</span>
+--context-dir<span class="o">=</span>lab-4/app --name b2m-nodejs <span class="se">\</span>
+--labels<span class="o">=</span><span class="s1">&#39;name=b2m-nodejs&#39;</span> --insecure-registry<span class="o">=</span><span class="nb">true</span>
+</pre></div>
+
+
+<p>The monitor expects the service's port name to be <code>web</code>, so edit the service and change  <code>spec.ports.name</code> to <code>web</code>:</p>
+<div class="codehilite"><pre><span></span>  <span class="nt">spec</span><span class="p">:</span>
+    <span class="nt">clusterIP</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">xxx.xxx.xxx.xxx</span>
+    <span class="nt">ports</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">web</span>
+</pre></div>
+
+
 <p>Create route to expose this application externally:</p>
 <div class="codehilite"><pre><span></span>oc expose svc b2m-nodejs
 </pre></div>
