@@ -182,13 +182,13 @@ docker-compose down -v
 
 ## Lab 2 - Node.js app logging with Humio
 
-[Humio](https://humio.com) is purpose-built to help any organization achieve the benefits of large-scale logging and analysis. Humio has virtually no latency even at massive ingest volumes. And by using cloud-based bucket storage for all persistent data, retention is virtually infinite.
-Humio aggregates, alerts, and visualizes streaming data in real time, so no matter what volume of data you send to Humio, data is processed instantly. This gives organizations live observability into the operations and health of their systems.
-Indexing can be a very computationally-expensive activity, causing latency between data entering a system and then being included in search results and visualizations. Humio does no indexing, so it remains lightning fast with no compromise on performance.
-Free-text search lets you search anything, in any field, without relying on pre-parsed fields. Schema on read allows you to extract data, define new fields, and use them to filter and aggregate as you search — all at blazing speeds.
-Humio uses high data compression so you can cut hardware costs and store more data. High compression also makes it cost-effective to retain more data for longer, enabling both more detailed analysis and traceability over longer time periods.
+[Humio](https://humio.com) is purpose-built to help any organization achieve the benefits of large-scale logging and analysis. It has virtually no latency even at massive ingest volumes. Humio aggregates, alerts, and visualizes streaming data in real time, so no matter what volume of data you send to Humio, data is processed instantly. This gives organizations live observability into the operations and health of their systems.
+Indexing can be a very computationally-expensive activity, causing latency between data entering a system and then being included in search results and visualizations. Humio does no indexing, so it remains lightning fast with no compromise on performance. Free-text search lets you search anything, in any field, without relying on pre-parsed fields. Schema on read allows you to extract data, define new fields, and use them to filter and aggregate as you search.
+Humio uses high data compression, so you can cut hardware costs and store more data. High compression also makes it cost-effective to retain more data for longer, enabling both more detailed analysis and traceability over longer time periods.
 
 More on https://www.humio.com/log-management#features
+
+During this lab we will run Humio in docker-compose and configure it in order to collect and analyse the log stream from a sample Node.js microservice.
 
 ### Instrument the Node.js app with logging
 
@@ -219,10 +219,10 @@ Ignore the error: `"No such service: b2m-nodejs"`, we will add it later.
 While waiting for containers, review the configuration of our logging lab.
 
 - `b2m-nodejs-v2/lab-2/docker-compose.yaml` - this is the main config file for docker-compose stack which specifies all options for all containers in the stack.
-- `b2m-nodejs-v2/lab-2/app/server.js` - the source code of our sample Node.js application instrumented with logging.
-- `b2m-nodejs-v2/lab-2/app/Dockerfile` - this file is used to build your app docker image.
+- `b2m-nodejs-v2/lab-2/app/server.js` - the source code of our sample Node.js application instrumented using `winston` logging library.
+- `b2m-nodejs-v2/lab-2/app/Dockerfile` - this file is used to build your application docker image.
 
-2). Access the Humio UI using internet browser on `http://<your-hostname>:8080` (If you run the lab locally, you can use the `localhost`)
+2). Access the Humio UI using web browser on `http://<your-hostname>:8080` (If you run the lab locally, you can use the `localhost`)
 
 3). Click `Add item` and create `b2m-nodejs` repository.
 
@@ -238,7 +238,7 @@ docker-compose down
 
 6). Edit the `b2m-nodejs-v2/lab-2/docker-compose.yaml` and paste the token as value of `splunk-token` (remember to put the token in quotes).
 
-7). Uncomment the whole `b2m-nodejs` section (together with all its options). Make sure the YAML indentation is correct (tip: remove `#` character together with one space character).
+7). Uncomment the whole `b2m-nodejs` section (together with all its options). Make sure the YAML indentation is correct.
 
 8). Start the Humio and Node.js stack:
 
