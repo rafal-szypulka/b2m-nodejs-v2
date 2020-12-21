@@ -639,12 +639,11 @@ docker-compose down -v
 
 
 <h2 id="lab-2-nodejs-app-logging-with-humio">Lab 2 - Node.js app logging with Humio<a class="headerlink" href="#lab-2-nodejs-app-logging-with-humio" title="Permanent link">&para;</a></h2>
-<p><a href="https://humio.com">Humio</a> is purpose-built to help any organization achieve the benefits of large-scale logging and analysis. Humio has virtually no latency even at massive ingest volumes. And by using cloud-based bucket storage for all persistent data, retention is virtually infinite.
-Humio aggregates, alerts, and visualizes streaming data in real time, so no matter what volume of data you send to Humio, data is processed instantly. This gives organizations live observability into the operations and health of their systems.
-Indexing can be a very computationally-expensive activity, causing latency between data entering a system and then being included in search results and visualizations. Humio does no indexing, so it remains lightning fast with no compromise on performance.
-Free-text search lets you search anything, in any field, without relying on pre-parsed fields. Schema on read allows you to extract data, define new fields, and use them to filter and aggregate as you search — all at blazing speeds.
-Humio uses high data compression so you can cut hardware costs and store more data. High compression also makes it cost-effective to retain more data for longer, enabling both more detailed analysis and traceability over longer time periods.</p>
+<p><a href="https://humio.com">Humio</a> is purpose-built to help any organization achieve the benefits of large-scale logging and analysis. It has virtually no latency even at massive ingest volumes. Humio aggregates, alerts, and visualizes streaming data in real time, so no matter what volume of data you send to Humio, data is processed instantly. This gives organizations live observability into the operations and health of their systems.
+Indexing can be a very computationally-expensive activity, causing latency between data entering a system and then being included in search results and visualizations. Humio does no indexing, so it remains lightning fast with no compromise on performance. Free-text search lets you search anything, in any field, without relying on pre-parsed fields. Schema on read allows you to extract data, define new fields, and use them to filter and aggregate as you search.
+Humio uses high data compression, so you can cut hardware costs and store more data. High compression also makes it cost-effective to retain more data for longer, enabling both more detailed analysis and traceability over longer time periods.</p>
 <p>More on https://www.humio.com/log-management#features</p>
+<p>During this lab we will run Humio in docker-compose and configure it in order to collect and analyse the log stream from a sample Node.js microservice.</p>
 <h3 id="instrument-the-nodejs-app-with-logging_1">Instrument the Node.js app with logging<a class="headerlink" href="#instrument-the-nodejs-app-with-logging_1" title="Permanent link">&para;</a></h3>
 <p>If you did the app instrumentation part of the Lab 1, just copy and replace the <code>b2m-nodejs-v2/lab-1/app/server.js</code> to <code>b2m-nodejs-v2/lab-2/app/server.js</code> and change the line:</p>
 <div class="codehilite"><pre><span></span>const port = process.env.PORT || 3001
@@ -671,10 +670,10 @@ Ignore the error: <code>"No such service: b2m-nodejs"</code>, we will add it lat
 <p>While waiting for containers, review the configuration of our logging lab.</p>
 <ul>
 <li><code>b2m-nodejs-v2/lab-2/docker-compose.yaml</code> - this is the main config file for docker-compose stack which specifies all options for all containers in the stack.</li>
-<li><code>b2m-nodejs-v2/lab-2/app/server.js</code> - the source code of our sample Node.js application instrumented with logging.</li>
-<li><code>b2m-nodejs-v2/lab-2/app/Dockerfile</code> - this file is used to build your app docker image.</li>
+<li><code>b2m-nodejs-v2/lab-2/app/server.js</code> - the source code of our sample Node.js application instrumented using <code>winston</code> logging library.</li>
+<li><code>b2m-nodejs-v2/lab-2/app/Dockerfile</code> - this file is used to build your application docker image.</li>
 </ul>
-<p>2). Access the Humio UI using internet browser on <code>http://&lt;your-hostname&gt;:8080</code> (If you run the lab locally, you can use the <code>localhost</code>)</p>
+<p>2). Access the Humio UI using web browser on <code>http://&lt;your-hostname&gt;:8080</code> (If you run the lab locally, you can use the <code>localhost</code>)</p>
 <p>3). Click <code>Add item</code> and create <code>b2m-nodejs</code> repository.</p>
 <p>4). Inside new repository,  go to <code>Settings -&gt; API Tokens</code>. Copy the default token.</p>
 <p><img alt="" src="../images/2020-11-13-13-45-14.png" /></p>
@@ -685,7 +684,7 @@ docker-compose down
 
 
 <p>6). Edit the <code>b2m-nodejs-v2/lab-2/docker-compose.yaml</code> and paste the token as value of <code>splunk-token</code> (remember to put the token in quotes).</p>
-<p>7). Uncomment the whole <code>b2m-nodejs</code> section (together with all its options). Make sure the YAML indentation is correct (tip: remove <code>#</code> character together with one space character).</p>
+<p>7). Uncomment the whole <code>b2m-nodejs</code> section (together with all its options). Make sure the YAML indentation is correct.</p>
 <p>8). Start the Humio and Node.js stack:</p>
 <div class="codehilite"><pre><span></span>cd b2m-nodejs-v2/lab-2
 ./start-lab2.sh
